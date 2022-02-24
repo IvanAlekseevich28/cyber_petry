@@ -10,9 +10,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    auto m_screen = new QGameScreen(this);
+    m_screen->setFixedSize(600, 600);
+    auto layout_screen = new QHBoxLayout(this);
+    layout_screen->addWidget(m_screen);
+
+
     m_engineThread.reset(new QThread(this));
 
     m_LCD = new QLCDNumber();
+    m_LCD->setFixedHeight(100);
 
     auto button_start = new QPushButton("Start");
     auto button_step = new QPushButton("Step");
@@ -22,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_step, SIGNAL(clicked()), this, SLOT(onStep()));
     connect(button_stop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(&m_eng, SIGNAL(newData(int)), m_LCD, SLOT(display(int)));
+    connect(&m_eng, SIGNAL(newData(int)), m_screen, SLOT(draw(int)));
     connect(button_stop, SIGNAL(clicked()), m_engineThread.get(), SLOT(quit()));
 
 
@@ -32,7 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
     layout_buttons->addWidget(button_stop);
 
     layout_buttons->addSpacing(100);
-    ui->centralwidget->setLayout(layout_buttons);
+    layout_screen->addLayout(layout_buttons);
+    ui->centralwidget->setLayout(layout_screen);
 }
 
 MainWindow::~MainWindow()

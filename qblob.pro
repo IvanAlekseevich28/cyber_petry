@@ -10,11 +10,13 @@ CONFIG += c++14
 
 SOURCES += \
     engine.cpp \
+    gamescreen.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     engine.h \
+    gamescreen.h \
     mainwindow.h
 
 FORMS += \

@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QOpenGLWidget>
+#include "gamescreen.h"
 #include <QThread>
 #include <QLCDNumber>
 #include <memory>
@@ -33,6 +33,7 @@ private:
     QLCDNumber *m_LCD;
     Engine m_eng;
     std::unique_ptr<QThread> m_engineThread;
+    QGameScreen* m_screen;
 
 };
 #endif // MAINWINDOW_H
