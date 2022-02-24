@@ -3,4 +3,4 @@
 #include "../common.h"
 #include <QColor>
 
-QColor getWatherCellColor(UShort wather, const MaxMin &mmw);
+QColor getWaterCellColor(UShort water, const MaxMin &mmw);

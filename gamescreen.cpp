@@ -72,7 +72,7 @@ void QGameScreen::drawSquare(double x1, double y1, double sidelength)
 void QGameScreen::drawPixSquare(UShort val, int x, int y, int size, MaxMin mmv)
 {
     QPainter p(this);
-    QColor clr = getWatherCellColor(val, mmv);
+    QColor clr = getWaterCellColor(val, mmv);
     p.setPen(clr);
     p.setBrush(QBrush(clr));
 //    p.drawLine(rect().topLeft(), rect().bottomRight());
@@ -88,12 +88,12 @@ void QGameScreen::drawMatrix()
     const auto vPixCellSize = vPixCount / vCellsCount;
     const auto hPixCellSize = hPixCount / hCellsCount;
 
-    auto mmw = pGameMatrix->getMMWather();
+    auto mmw = pGameMatrix->getMMWater();
     for (UINT64 y = 0; y < hCellsCount ; y++) {
         for (UINT64 x = 0; x < vCellsCount ; x++) {
-            auto wather = pGameMatrix->mat[y][x].wather;
-            if (wather != 0)
-                drawPixSquare(wather, x*vPixCellSize, y*hPixCellSize, vPixCellSize, mmw);
+            auto water = pGameMatrix->mat[y][x].water;
+            if (water != 0)
+                drawPixSquare(water, x*vPixCellSize, y*hPixCellSize, vPixCellSize, mmw);
         }
     }
 }

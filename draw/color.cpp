@@ -23,8 +23,8 @@ QColor int2Clr(UINT rgb)
     return qclr;
 }
 
-QColor getWatherCellColor(UShort wather, const MaxMin& mmw)
+QColor getWaterCellColor(UShort water, const MaxMin& mmw)
 {
-    UINT nRGB = blueGrad[getArrIndex(wather, mmw, blueGradSize)];
+    UINT nRGB = blueGrad[getArrIndex(water, mmw, blueGradSize)];
     return int2Clr(nRGB);
 }

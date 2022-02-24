@@ -15,8 +15,8 @@ typedef unsigned long long UINT64;
 
 struct Cell
 {
-    Cell(UShort w = 0) : wather(w) {}
-    UShort wather;
+    Cell(UShort w = 0) : water(w) {}
+    UShort water;
 };
 
 struct MSize
@@ -55,23 +55,23 @@ public:
     std::array<Cell, MATH>& operator[](int y)
     {return mat[y % MATH];}
 
-    const MaxMin &getMMWather() const;
-    void setMMWather(const MaxMin &newMMWather);
+    const MaxMin &getMMWater() const;
+    void setMMWater(const MaxMin &newMMWater);
 
 private:
         UINT index;
-        MaxMin MMWather;
+        MaxMin MMWater;
 
 };
 
-inline const MaxMin &GMatrix::getMMWather() const
+inline const MaxMin &GMatrix::getMMWater() const
 {
-    return MMWather;
+    return MMWater;
 }
 
-inline void GMatrix::setMMWather(const MaxMin &newMMWather)
+inline void GMatrix::setMMWater(const MaxMin &newMMWater)
 {
-    MMWather = newMMWather;
+    MMWater = newMMWater;
 }
 
 typedef std::shared_ptr<GMatrix> PtrGMat;
