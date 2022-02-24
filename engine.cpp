@@ -5,13 +5,13 @@
 
 Engine::Engine(QObject *parent) : QObject(parent)
 {
-    pGameMatrix = getMat(Point(4,4), 3000);
+    pGameMatrix = getMat(Point(4,4), 10000);
 }
 
 int Engine::step()
 {
     pGameMatrix = doFluid(pGameMatrix, MSize(MATH, MATW));
-    usleep(1000*500); // 0.5 sec
+    usleep(1000*5); // 0.5 sec
     emit newData(pGameMatrix);
     emit newStep(pGameMatrix->getIndex());
     return pGameMatrix->getIndex();

@@ -1,4 +1,6 @@
 #include "gamescreen.h"
+#include "draw/color.h"
+
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QPainter>
@@ -67,11 +69,12 @@ void QGameScreen::drawSquare(double x1, double y1, double sidelength)
     glEnd();
 }
 
-void QGameScreen::drawPixSquare(int x, int y, int size)
+void QGameScreen::drawPixSquare(UShort val, int x, int y, int size, MaxMin mmv)
 {
     QPainter p(this);
-    p.setPen(Qt::blue);
-    p.setBrush(QBrush(Qt::blue));
+    QColor clr = getWatherCellColor(val, mmv);
+    p.setPen(clr);
+    p.setBrush(QBrush(clr));
 //    p.drawLine(rect().topLeft(), rect().bottomRight());
     p.drawRect(x, y, size, size);
 }
@@ -85,10 +88,12 @@ void QGameScreen::drawMatrix()
     const auto vPixCellSize = vPixCount / vCellsCount;
     const auto hPixCellSize = hPixCount / hCellsCount;
 
+    auto mmw = pGameMatrix->getMMWather();
     for (UINT64 y = 0; y < hCellsCount ; y++) {
         for (UINT64 x = 0; x < vCellsCount ; x++) {
-            if (pGameMatrix->mat[y][x].wather != 0)
-                drawPixSquare(x*vPixCellSize, y*hPixCellSize, vPixCellSize);
+            auto wather = pGameMatrix->mat[y][x].wather;
+            if (wather != 0)
+                drawPixSquare(wather, x*vPixCellSize, y*hPixCellSize, vPixCellSize, mmw);
         }
     }
 }

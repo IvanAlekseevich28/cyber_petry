@@ -19,7 +19,7 @@ protected:
     virtual void resizeGL(int nWidth, int nHeight);
     virtual void paintGL();
     void drawSquare(double x1, double y1, double sidelength);
-    void drawPixSquare(int x, int y, int size);
+    void drawPixSquare(UShort val, int x, int y, int size, MaxMin mmv);
     void drawMatrix();
 
 private:

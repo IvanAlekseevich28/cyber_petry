@@ -96,6 +96,24 @@ PtrGMat doFluid(const PtrGMat initPMat, const MSize &s)
         }
     }
 
-
+    setMaxMinWather(OM);
     return OM;
+}
+
+void setMaxMinWather(PtrGMat pmat)
+{
+    const auto vCellsCount = pmat->mat.size();
+    const auto hCellsCount = vCellsCount ? pmat->mat[0].size() : 0;
+
+    int min = pmat->mat[0][0].wather;
+    int max = min;
+    for (UINT64 y = 0; y < hCellsCount ; y++) {
+        for (UINT64 x = 0; x < vCellsCount ; x++) {
+            const auto& val = pmat->mat[y][x].wather;
+            if (val < min) min = val;
+            else if (val > max) max = val;
+        }
+    }
+
+    pmat->setMMWather(MaxMin(max, min));
 }

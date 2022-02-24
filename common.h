@@ -34,6 +34,14 @@ struct Point
     Point(short x=0, short y=0) : x(x), y(y) {}
 };
 
+struct MaxMin
+{
+    MaxMin(int max = -1, int min = -1):
+        max(max), min(min) {}
+    int max;
+    int min;
+};
+
 typedef std::array<std::array<Cell, MATH>, MATW> CellMatrix;
 
 class GMatrix
@@ -47,9 +55,24 @@ public:
     std::array<Cell, MATH>& operator[](int y)
     {return mat[y % MATH];}
 
+    const MaxMin &getMMWather() const;
+    void setMMWather(const MaxMin &newMMWather);
+
 private:
         UINT index;
+        MaxMin MMWather;
+
 };
+
+inline const MaxMin &GMatrix::getMMWather() const
+{
+    return MMWather;
+}
+
+inline void GMatrix::setMMWather(const MaxMin &newMMWather)
+{
+    MMWather = newMMWather;
+}
 
 typedef std::shared_ptr<GMatrix> PtrGMat;
 Q_DECLARE_METATYPE(PtrGMat)
