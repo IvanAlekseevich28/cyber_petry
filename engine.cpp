@@ -1,17 +1,20 @@
 #include "engine.h"
 #include <unistd.h>
+#include "engine/fluid.h"
 
-Engine::Engine(QObject *parent) : QObject(parent), m_nStep(0)
+
+Engine::Engine(QObject *parent) : QObject(parent)
 {
-
+    pGameMatrix = getMat(Point(4,4), 3000);
 }
 
 int Engine::step()
 {
-    m_nStep++;
-    usleep(1000*1000); // 1 sec
-    emit newData(m_nStep);
-    return m_nStep;
+    pGameMatrix = doFluid(pGameMatrix, MSize(MATH, MATW));
+    usleep(1000*500); // 0.5 sec
+    emit newData(pGameMatrix);
+    emit newStep(pGameMatrix->getIndex());
+    return pGameMatrix->getIndex();
 }
 
 void Engine::stop()
@@ -21,7 +24,7 @@ void Engine::stop()
 
 int Engine::nStep() const
 {
-    return m_nStep;
+    return pGameMatrix->getIndex();
 }
 
 void Engine::loop()

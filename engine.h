@@ -2,6 +2,7 @@
 #define ENGINE_H
 
 #include <QObject>
+#include "common.h"
 
 class Engine : public QObject
 {
@@ -17,10 +18,11 @@ public slots:
     void stop();
 
 signals:
-    void newData(int data);
+    void newData(PtrGMat pmat);
+    void newStep(int index);
 
 private:
-    int m_nStep;
+    PtrGMat pGameMatrix;
 
 public:
     bool start;

@@ -10,12 +10,15 @@ CONFIG += c++14
 
 SOURCES += \
     engine.cpp \
+    engine/fluid.cpp \
     gamescreen.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    common.h \
     engine.h \
+    engine/fluid.h \
     gamescreen.h \
     mainwindow.h
 

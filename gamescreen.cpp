@@ -3,14 +3,14 @@
 #include <QOpenGLFunctions>
 #include <QPainter>
 
-QGameScreen::QGameScreen(QWidget *parent) : QOpenGLWidget(parent)
+QGameScreen::QGameScreen(QWidget *parent, UShort w, UShort h) : QOpenGLWidget(parent)
 {
-
+    setFixedSize(w,h);
 }
 
-void QGameScreen::draw(int data)
+void QGameScreen::draw(PtrGMat pmat)
 {
-    this->data = data;
+    pGameMatrix = pmat;
     update();
 }
 
@@ -47,7 +47,8 @@ void QGameScreen::paintGL()
 //    glColor3f(0.0, 1.0, 1.0);
 //    glVertex3f(0.5, 0.5, 0);
 //    glEnd();
-    drawPixSquare(data*20, data*20, 20);
+    if (pGameMatrix.get())
+        drawMatrix();
 
 }
 
@@ -56,7 +57,7 @@ void QGameScreen::drawSquare(double x1, double y1, double sidelength)
     double halfside = sidelength / 2;
 
     glColor3d(0,1,0);
-    glBegin(GL_POLYGON);
+    glBegin(GL_TRIANGLE_FAN);
 
     glVertex2d(x1 + halfside, y1 + halfside);
     glVertex2d(x1 + halfside, y1 - halfside);
@@ -70,7 +71,24 @@ void QGameScreen::drawPixSquare(int x, int y, int size)
 {
     QPainter p(this);
     p.setPen(Qt::blue);
-    p.setBrush(QBrush(Qt::black));
+    p.setBrush(QBrush(Qt::blue));
 //    p.drawLine(rect().topLeft(), rect().bottomRight());
     p.drawRect(x, y, size, size);
+}
+
+void QGameScreen::drawMatrix()
+{
+    const auto vCellsCount = pGameMatrix->mat.size();
+    const auto hCellsCount = vCellsCount ? pGameMatrix->mat[0].size() : 0;
+    const auto vPixCount = height();
+    const auto hPixCount = width();
+    const auto vPixCellSize = vPixCount / vCellsCount;
+    const auto hPixCellSize = hPixCount / hCellsCount;
+
+    for (UINT64 y = 0; y < hCellsCount ; y++) {
+        for (UINT64 x = 0; x < vCellsCount ; x++) {
+            if (pGameMatrix->mat[y][x].wather != 0)
+                drawPixSquare(x*vPixCellSize, y*hPixCellSize, vPixCellSize);
+        }
+    }
 }

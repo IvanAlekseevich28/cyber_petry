@@ -3,6 +3,7 @@
 
 #include <QLayout>
 #include <QPushButton>
+#include <QMetaType>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,14 +11,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    auto m_screen = new QGameScreen(this);
-    m_screen->setFixedSize(600, 600);
+    auto m_screen = new QGameScreen(this, 600, 600);
     auto layout_screen = new QHBoxLayout(this);
     layout_screen->addWidget(m_screen);
 
 
     m_engineThread.reset(new QThread(this));
 
+    qRegisterMetaType<PtrGMat>();
     m_LCD = new QLCDNumber();
     m_LCD->setFixedHeight(100);
 
@@ -28,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_start, SIGNAL(clicked()), this, SLOT(onStart()));
     connect(button_step, SIGNAL(clicked()), this, SLOT(onStep()));
     connect(button_stop, SIGNAL(clicked()), this, SLOT(onStop()));
-    connect(&m_eng, SIGNAL(newData(int)), m_LCD, SLOT(display(int)));
-    connect(&m_eng, SIGNAL(newData(int)), m_screen, SLOT(draw(int)));
+    connect(&m_eng, SIGNAL(newStep(int)), m_LCD, SLOT(display(int)));
+    connect(&m_eng, SIGNAL(newData(PtrGMat)), m_screen, SLOT(draw(PtrGMat)));
     connect(button_stop, SIGNAL(clicked()), m_engineThread.get(), SLOT(quit()));
 
 
@@ -66,7 +67,7 @@ void MainWindow::onStep()
     disconnect(m_engineThread.get(), SIGNAL(started()), &m_eng, nullptr);
     m_eng.moveToThread(m_engineThread.get());
     connect(m_engineThread.get(), SIGNAL(started()), &m_eng, SLOT(step()));
-    connect(&m_eng, SIGNAL(newData(int)), m_engineThread.get(), SLOT(quit()));
+    connect(&m_eng, SIGNAL(newData(PtrGMat)), m_engineThread.get(), SLOT(quit()));
 
     m_engineThread->start();
 }

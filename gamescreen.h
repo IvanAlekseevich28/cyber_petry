@@ -3,15 +3,16 @@
 
 #include <QOpenGLWidget>
 #include <QObject>
+#include "common.h"
 
 class QGameScreen : public QOpenGLWidget
 {
     Q_OBJECT
 public:
-    QGameScreen(QWidget *parent = nullptr);
+    QGameScreen(QWidget *parent = nullptr, UShort w = 600, UShort h = 600);
 
 public slots:
-    void draw(int data);
+    void draw(PtrGMat pmat);
 
 protected:
     virtual void initializeGL() ;
@@ -19,9 +20,10 @@ protected:
     virtual void paintGL();
     void drawSquare(double x1, double y1, double sidelength);
     void drawPixSquare(int x, int y, int size);
+    void drawMatrix();
 
 private:
-    int data = 0;
+    PtrGMat pGameMatrix;
 };
 
 #endif // QGAMESCREEN_H
