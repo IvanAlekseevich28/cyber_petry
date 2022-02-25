@@ -19,11 +19,13 @@ private:
     inline void calcOnePoint(TCoord x, TCoord y, PtrField pOutField);
 
 private:
-    static void calcOneChank    (const Field& in, Field& out, CArea a);
+    static void calcOneChank    (MetaCells &mc, CArea a);
 
-    static void calcLiquids     (const Field& in, Field& out, CArea a);
-    static void calcLiquidsFlows(const Field& in, Field& out, CArea a);
-    static void calcFlows       (const Field& in, Field& out, CArea a);
+    static void calcLiquids     (MetaCells &mc, CArea a);
+    static void calcLiquidsGrad (MetaCells &mc, CArea a);
+    static void calcFlows       (MetaCells &mc, CArea a);
+
+    static LstPoints getNeighbours(CPoint p);
 
 private:
     PtrField m_pField;

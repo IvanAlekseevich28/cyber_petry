@@ -21,6 +21,16 @@ Tools::PointsRange &Tools::PointsRange::operator++()
     return *this;
 }
 
+CPoint Tools::PointsRange::operator*() const
+{
+    return m_iter;
+}
+
+CPoint Tools::PointsRange::operator->() const
+{
+    return m_iter;
+}
+
 bool Tools::PointsRange::isEnd() const
 {
     return m_iter == m_area.rb;

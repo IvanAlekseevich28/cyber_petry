@@ -14,8 +14,12 @@ public:
     PointsRange(CPoint lt, CPoint rb);
     PointsRange(CArea a);
 
-    PointsRange& operator++();  // prefix
-    bool isEnd()const;
+    inline PointsRange& operator++();  // prefix
+    inline CPoint operator*()const;
+    inline CPoint operator->()const;
+    inline TCoord X()const {return m_iter.x;}
+    inline TCoord Y()const {return m_iter.y;}
+    inline bool isEnd()const;
 private:
     Area m_area;
     Point m_iter;
