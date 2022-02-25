@@ -5,8 +5,8 @@
 #include <memory>
 #include <QMetaType>
 
-#define MATW 40
-#define MATH 40
+#define MATW 300
+#define MATH 300
 
 typedef unsigned char Byte;
 typedef unsigned short UShort;

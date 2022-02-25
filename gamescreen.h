@@ -9,7 +9,7 @@ class QGameScreen : public QOpenGLWidget
 {
     Q_OBJECT
 public:
-    QGameScreen(QWidget *parent = nullptr, UShort w = 600, UShort h = 600);
+    QGameScreen(QWidget *parent = nullptr, UShort w = 1200, UShort h = 1200);
 
 public slots:
     void draw(PtrGMat pmat);

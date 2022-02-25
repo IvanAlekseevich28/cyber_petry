@@ -62,14 +62,14 @@ short getCountNeighbours(const Point& p, const MSize &s)
     return 2;
 }
 
-inline UShort getGotValue(UShort n, short cn)
+inline UShort getGotValue(UShort n)
 {
-    return n/(cn+1);
+    return n/5;
 }
 
 UShort getStayValue(UShort n, short cn)
 {
-    UShort forNeighbours = cn * getGotValue(n, cn);
+    UShort forNeighbours = cn * getGotValue(n);
     UShort stay = n - forNeighbours;
     return stay;
 }
@@ -92,7 +92,7 @@ PtrGMat doFluid(const PtrGMat initPMat, const MSize &s)
 
             OM->mat[x][y].water += getStayValue(lastNum, ns.size());
             for (Point n : ns)
-                OM->mat[n.x][n.y].water += getGotValue(lastNum, ns.size());
+                OM->mat[n.x][n.y].water += getGotValue(lastNum);
         }
     }
 
