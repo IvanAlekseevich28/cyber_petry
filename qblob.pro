@@ -12,6 +12,10 @@ SOURCES += \
     draw/color.cpp \
     engine.cpp \
     engine/fluid.cpp \
+    engine/fluidengine.cpp \
+    engine/fluidenginetools.cpp \
+    engine/tools.cpp \
+    engine/types.cpp \
     gamescreen.cpp \
     main.cpp \
     mainwindow.cpp
@@ -21,6 +25,10 @@ HEADERS += \
     draw/color.h \
     engine.h \
     engine/fluid.h \
+    engine/fluidengine.h \
+    engine/fluidenginetools.h \
+    engine/tools.h \
+    engine/types.h \
     gamescreen.h \
     mainwindow.h
 
