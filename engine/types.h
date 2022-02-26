@@ -36,6 +36,22 @@ typedef int TLiquid;
 typedef int TFlow;
 typedef int TCoord;
 typedef unsigned TCount;
+typedef unsigned TLight;
+typedef unsigned TFlags;
+
+struct SimParams
+{
+    bool hasAllLiquids  =false;
+    bool hasSolid       =false;
+    bool hasLights      =false;
+    bool hasHeat        =false;
+    bool hasFlow        =false;
+
+    SimParams(bool hasAllLiquids = false,
+              bool hasSolid = false, bool hasLights = false,
+              bool hasHeat = false, bool hasFlow = false);
+};
+typedef const SimParams& CSimParams;
 
 struct Flow
 {
@@ -50,16 +66,31 @@ struct Flow
 struct Cell
 {
     std::array<TLiquid, LT__END> arrLiquids;
+    TLight irgb; // infra-red|red|green|blue
+    TFlags sld; // it has 4 elems of 8 bit len
     Flow flow;
 
     Cell();
 
-    inline TLiquid getLiquidsSum()const;
-    inline void applyNeighbourLiquids(const Cell& n, eDirection dir);
-    inline TFlow calcGrad(const Cell& last)const;
-    inline void stayLiquids(const Cell& last, TCount cn);
-    inline TCount getFlowBonus(const Cell& n, eDirection dir, TCount onePart=50);
-//    inline TFlow
+    void stayLiquids(const Cell &last, TCount cn);
+    inline void stayLiquid(const Cell& last, TCount cn, eLiquidType eLT)
+    {
+        TCount forNeighbours = cn * (last.arrLiquids[eLT] / 5);
+        arrLiquids[eLT] = last.arrLiquids[eLT] - forNeighbours;
+    }
+
+    void applyNeighbourLiquids(const Cell& nbr);
+    inline void applyNeighbourLiquid(const Cell& nbr, eLiquidType eLT)
+    {arrLiquids[eLT] += nbr.arrLiquids[eLT] / 5;}
+
+    TLiquid getLiquidsSum()const;
+    inline bool isSolid()const {return sld & 0x00FFFFFF;};
+
+    inline TFlow calcGrad(const Cell& last)const
+    {return getLiquidsSum() - last.getLiquidsSum();}
+
+    TCount getFlowBonus(const Cell& n, eDirection dir, TCount onePart=50);
+    //    inline TFlow
 };
 typedef const Cell& CCell;
 typedef std::array<std::array<Cell, MatH>, MatW> CellMatrix;
@@ -73,6 +104,7 @@ struct Field
     unsigned index;
 };
 typedef std::shared_ptr<Field> PtrField;
+typedef const Field& CField;
 
 struct MSize
 {
@@ -88,7 +120,7 @@ struct Point
     TCoord y;
     Point(TCoord x=0, TCoord y=0) : x(x), y(y) {}
     bool operator==(const Point& o)const
-        {return (x == o.x) && (y == o.y);}
+    {return (x == o.x) && (y == o.y);}
     inline eDirection getRelativelyDirection(const Point& o)const;
 };
 typedef const Point& CPoint;
@@ -118,12 +150,14 @@ typedef std::array<std::array<TFlow, MatH>, MatW> LiquidsGrad;
 
 struct MetaCells
 {
-    const Field &pin;
+    CField pin;
     Field& pout;
+    CSimParams params;
     LiquidsGrad lg;
 
-    MetaCells (const PtrField& in, PtrField& out) :
-        pin(*in), pout(*out) {}
+
+    MetaCells (const PtrField& in, PtrField& out, CSimParams p) :
+        pin(*in), pout(*out), params(p) {}
 };
 
 }

@@ -9,7 +9,7 @@ namespace Eng
 class FluidEngine
 {
 public:
-    FluidEngine();
+    FluidEngine(SimParams param);
     PtrField step(TCount steps);
 
     friend class FluidEngineTools;
@@ -21,14 +21,17 @@ private:
 private:
     static void calcOneChank    (MetaCells &mc, CArea a);
 
-    static void calcLiquids     (MetaCells &mc, CArea a);
+    static void calcOneLiquid      (MetaCells &mc, CArea a, eLiquidType eLT = LT_water);
+    static void calcAllLiquids     (MetaCells &mc, CArea a);
     static void calcLiquidsGrad (MetaCells &mc, CArea a);
     static void calcFlows       (MetaCells &mc, CArea a);
 
-    static LstPoints getNeighbours(CPoint p);
+    static LstDirPoints getNeighbours(CPoint p);
+    static LstDirPoints getNeighboursSolid(CPoint p, CField inF);
 
 private:
     PtrField m_pField;
     LstArea m_lstFlows;
+    SimParams m_params;
 };
 }

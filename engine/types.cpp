@@ -31,7 +31,7 @@ Flow Flow::split(TFlow numerator, TFlow denominator, bool sqrt2, bool isLandT)
     return oth;
 }
 
-Cell::Cell() : flow(0,0)
+Cell::Cell() : irgb(0), sld(0), flow(0,0)
 {
     arrLiquids.fill(0);
 }
@@ -44,24 +44,28 @@ TLiquid Cell::getLiquidsSum() const
     return sum;
 }
 
-void Cell::applyNeighbourLiquids(const Cell &n, eDirection dir)
+void Cell::applyNeighbourLiquids(const Cell &nbr)
 {
     for (TCount i = 0; i < LT__END; i++)
-    {
-
-    }
+        applyNeighbourLiquid(nbr, (eLiquidType)i);
 }
 
-TFlow Cell::calcGrad(const Cell &last) const
+void Cell::applyNeighbourLiquid(const Cell &nbr, eLiquidType eLT)
 {
-    return getLiquidsSum() - last.getLiquidsSum();
+    arrLiquids[eLT] += nbr.arrLiquids[eLT] / 5;
+}
+
+void Cell::stayLiquid(const Cell &last, TCount cn, eLiquidType eLT)
+{
+    TCount forNeighbours = cn * (last.arrLiquids[eLT] / 5);
+    arrLiquids[eLT] = last.arrLiquids[eLT] - forNeighbours;
+
 }
 
 void Cell::stayLiquids(const Cell &last, TCount cn)
 {
-    TCount forNeighbours = cn * (last.getLiquidsSum() / 5);
-    TCount stay = last.getLiquidsSum() - forNeighbours;
-
+    for (TCount i = 0; i < LT__END; i++)
+        stayLiquid(last, cn, (eLiquidType)i);
 }
 
 TCount Cell::getFlowBonus(const Cell &n, eDirection dir, TCount onePart)
@@ -122,3 +126,6 @@ DirPoint::DirPoint(TCoord x, TCoord y, eDirection direction) : p(x,y), direct(di
 {
 
 }
+
+SimParams::SimParams(bool hasAllLiquids, bool hasSolid, bool hasLights, bool hasHeat, bool hasFlow) :
+    hasAllLiquids(hasAllLiquids), hasSolid(hasSolid), hasLights(hasLights), hasHeat(hasHeat), hasFlow(hasFlow) {}
