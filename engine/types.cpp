@@ -36,6 +36,14 @@ Cell::Cell() : irgb(0), sld(0), flow(0,0)
     arrLiquids.fill(0);
 }
 
+void Cell::clear()
+{
+    arrLiquids.fill(0);
+    irgb = 0;
+    sld = 0;
+    flow.setXY(0,0);
+}
+
 TLiquid Cell::getLiquidsSum() const
 {
     TLiquid sum(0);
@@ -48,18 +56,6 @@ void Cell::applyNeighbourLiquids(const Cell &nbr)
 {
     for (TCount i = 0; i < LT__END; i++)
         applyNeighbourLiquid(nbr, (eLiquidType)i);
-}
-
-void Cell::applyNeighbourLiquid(const Cell &nbr, eLiquidType eLT)
-{
-    arrLiquids[eLT] += nbr.arrLiquids[eLT] / 5;
-}
-
-void Cell::stayLiquid(const Cell &last, TCount cn, eLiquidType eLT)
-{
-    TCount forNeighbours = cn * (last.arrLiquids[eLT] / 5);
-    arrLiquids[eLT] = last.arrLiquids[eLT] - forNeighbours;
-
 }
 
 void Cell::stayLiquids(const Cell &last, TCount cn)

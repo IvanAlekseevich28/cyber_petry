@@ -2,13 +2,13 @@
 #define ENGINE_H
 
 #include <QObject>
-#include "common.h"
+#include "engine/fluidengine.h"
 
-class Engine : public QObject
+class QEngine : public QObject
 {
     Q_OBJECT
 public:
-    explicit Engine(QObject *parent = nullptr);
+    explicit QEngine(QObject *parent = nullptr);
 
     int nStep() const;
 
@@ -18,11 +18,11 @@ public slots:
     void stop();
 
 signals:
-    void newData(PtrGMat pmat);
+    void newData(Eng::PtrField field);
     void newStep(int index);
 
 private:
-    PtrGMat pGameMatrix;
+    Eng::FluidEngine eng;
 
 public:
     bool start;

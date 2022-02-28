@@ -59,6 +59,8 @@ struct Flow
     TFlow ySpd;
     Flow(TFlow x=0, TFlow y=0) :
         xSpd(x), ySpd(y) {}
+    void inline setXY(TFlow x=0, TFlow y=0)
+        {xSpd = x; ySpd = y;}
     Flow &operator+=(const Flow& oth);
     Flow split(TFlow numerator, TFlow denominator=32, bool sqrt2=false, bool isLandT = true);
 };
@@ -71,6 +73,7 @@ struct Cell
     Flow flow;
 
     Cell();
+    void clear();
 
     void stayLiquids(const Cell &last, TCount cn);
     inline void stayLiquid(const Cell& last, TCount cn, eLiquidType eLT)
@@ -120,8 +123,10 @@ struct Point
     TCoord y;
     Point(TCoord x=0, TCoord y=0) : x(x), y(y) {}
     bool operator==(const Point& o)const
-    {return (x == o.x) && (y == o.y);}
+        {return (x == o.x) && (y == o.y);}
     inline eDirection getRelativelyDirection(const Point& o)const;
+    inline bool inField()const
+        {return x >= 0 && (TCount)x < MatW && y >= 0 && (TCount)y < MatH;}
 };
 typedef const Point& CPoint;
 typedef std::list<Point> LstPoints;

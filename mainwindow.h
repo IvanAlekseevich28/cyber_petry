@@ -31,7 +31,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QLCDNumber *m_LCD;
-    Engine m_eng;
+    QEngine m_eng;
     std::unique_ptr<QThread> m_engineThread;
     QGameScreen* m_screen;
 

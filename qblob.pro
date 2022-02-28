@@ -11,7 +11,6 @@ CONFIG += c++14
 SOURCES += \
     draw/color.cpp \
     engine.cpp \
-    engine/fluid.cpp \
     engine/fluidengine.cpp \
     engine/fluidenginetools.cpp \
     engine/tools.cpp \
@@ -24,7 +23,6 @@ HEADERS += \
     common.h \
     draw/color.h \
     engine.h \
-    engine/fluid.h \
     engine/fluidengine.h \
     engine/fluidenginetools.h \
     engine/tools.h \

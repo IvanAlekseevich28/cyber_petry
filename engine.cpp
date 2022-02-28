@@ -1,37 +1,34 @@
 #include "engine.h"
 #include <unistd.h>
-#include "engine/fluid.h"
+#include "engine/fluidenginetools.h"
 
 
-Engine::Engine(QObject *parent) : QObject(parent)
+QEngine::QEngine(QObject *parent) : QObject(parent),
+    eng(Eng::SimParams(true))
 {
-    pGameMatrix = getMat(Point(4,4), 60000);
-    pGameMatrix->mat[20][20].water = 50000;
-    pGameMatrix->mat[10][35].water = 20000;
-    pGameMatrix->mat[22][17].water = 40000;
-    pGameMatrix->mat[30][12].water = 60000;
+    Eng::FluidEngineTools()
 }
 
-int Engine::step()
+int QEngine::step()
 {
-    pGameMatrix = doFluid(pGameMatrix, MSize(MATH, MATW));
+    Eng::PtrField pField = eng.step(1);
 //    usleep(1000*5); // 0.5 sec
-    emit newData(pGameMatrix);
-    emit newStep(pGameMatrix->getIndex());
-    return pGameMatrix->getIndex();
+    emit newData(pField);
+    emit newStep(pField->index);
+    return pField->index;
 }
 
-void Engine::stop()
+void QEngine::stop()
 {
     start = false;
 }
 
-int Engine::nStep() const
+int QEngine::nStep() const
 {
     return pGameMatrix->getIndex();
 }
 
-void Engine::loop()
+void QEngine::loop()
 {
     start = true;
     while (start)
