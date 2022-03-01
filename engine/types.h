@@ -3,7 +3,7 @@
 #include <array>
 #include <memory>
 #include <list>
-
+#include <QMetaType>
 
 namespace Eng
 {
@@ -65,9 +65,11 @@ struct Flow
     Flow split(TFlow numerator, TFlow denominator=32, bool sqrt2=false, bool isLandT = true);
 };
 
+typedef std::array<TLiquid, LT__END> TLiquids;
+
 struct Cell
 {
-    std::array<TLiquid, LT__END> arrLiquids;
+    TLiquids arrLiquids;
     TLight irgb; // infra-red|red|green|blue
     TFlags sld; // it has 4 elems of 8 bit len
     Flow flow;
@@ -164,5 +166,6 @@ struct MetaCells
     MetaCells (const PtrField& in, PtrField& out, CSimParams p) :
         pin(*in), pout(*out), params(p) {}
 };
-
 }
+
+Q_DECLARE_METATYPE(Eng::PtrField);

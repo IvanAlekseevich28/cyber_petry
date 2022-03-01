@@ -1,18 +1,18 @@
 #include "gamescreen.h"
-#include "draw/color.h"
 
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QPainter>
+#include "engine/tools.h"
 
-QGameScreen::QGameScreen(QWidget *parent, UShort w, UShort h) : QOpenGLWidget(parent)
+QGameScreen::QGameScreen(QWidget *parent, int w, int h) : QOpenGLWidget(parent)
 {
     setFixedSize(w,h);
 }
 
-void QGameScreen::draw(PtrGMat pmat)
+void QGameScreen::draw(Eng::PtrField pField)
 {
-    pGameMatrix = pmat;
+    m_pField = pField;
     update();
 }
 
@@ -25,33 +25,12 @@ void QGameScreen::initializeGL()
 void QGameScreen::resizeGL(int nWidth, int nHeight)
 {
     glViewport(0, 0, nWidth, nHeight);
-    //    QOpenGLWidget::resizeGL(nWidth, nHeight);
-    //    glMatrixМode(GL_PROJECTION);
-    //    glLoadidentity();
-    //    glViewport(0, 0, (GLint)nWidth, (GLint)nHeight);
-    //    glOrtho(0, 100, 100, 0, -1, 1);
 }
 
 void QGameScreen::paintGL()
 {
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//    glBegin(GL_QUADS);
-//    glColor3f(1.0, 0.0, 0.0);
-//    glVertex3f(-0.5, -0.5, 0);
-
-//    glColor3f(0.0, 1.0, 0.0);
-//    glVertex3f(0.5, -0.5, 0);
-
-//    glColor3f(0.0, 0.0, 1.0);
-//    glVertex3f(-0.5, 0.5, 0);
-
-//    glColor3f(0.0, 1.0, 1.0);
-//    glVertex3f(0.5, 0.5, 0);
-//    glEnd();
-    if (pGameMatrix.get())
+    if (m_pField.get())
         drawMatrix();
-
 }
 
 void QGameScreen::drawSquare(double x1, double y1, double sidelength)
@@ -69,31 +48,32 @@ void QGameScreen::drawSquare(double x1, double y1, double sidelength)
     glEnd();
 }
 
-void QGameScreen::drawPixSquare(UShort val, int x, int y, int size, MaxMin mmv)
+void QGameScreen::drawPixSquare(Eng::CCell cell, int x, int y, int size)
 {
     QPainter p(this);
-    QColor clr = getWaterCellColor(val, mmv);
+    QColor clr = m_CellClr.getQColor(cell);
     p.setPen(clr);
     p.setBrush(QBrush(clr));
-//    p.drawLine(rect().topLeft(), rect().bottomRight());
+    //    p.drawLine(rect().topLeft(), rect().bottomRight());
     p.drawRect(x, y, size, size);
 }
 
 void QGameScreen::drawMatrix()
 {
-    const auto vCellsCount = pGameMatrix->mat.size();
-    const auto hCellsCount = vCellsCount ? pGameMatrix->mat[0].size() : 0;
+    const auto vCellsCount = m_pField->m.size();
+    const auto hCellsCount = vCellsCount ? m_pField->m[0].size() : 0;
     const auto vPixCount = height();
     const auto hPixCount = width();
     const auto vPixCellSize = vPixCount / vCellsCount;
     const auto hPixCellSize = hPixCount / hCellsCount;
 
-    auto mmw = pGameMatrix->getMMWater();
-    for (UINT64 y = 0; y < hCellsCount ; y++) {
-        for (UINT64 x = 0; x < vCellsCount ; x++) {
-            auto water = pGameMatrix->mat[y][x].water;
-            if (water != 0)
-                drawPixSquare(water, x*vPixCellSize, y*hPixCellSize, vPixCellSize, mmw);
-        }
+    Eng::Tools::PointsRange pr(vCellsCount, hCellsCount);
+    while (pr.isEnd() == false)
+    {
+        Eng::CCell cell = m_pField->m[pr.X()][pr.Y()];
+
+        drawPixSquare(cell, pr.X()*vPixCellSize, pr.Y()*hPixCellSize, vPixCellSize);
+
+        ++pr;
     }
 }

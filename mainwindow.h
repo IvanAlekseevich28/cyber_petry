@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "gamescreen.h"
+#include "gui/infomonitor.h"
 #include <QThread>
 #include <QLCDNumber>
 #include <memory>
@@ -34,6 +35,7 @@ private:
     QEngine m_eng;
     std::unique_ptr<QThread> m_engineThread;
     QGameScreen* m_screen;
+    QInfoMonitor* m_imonitor;
 
 };
 #endif // MAINWINDOW_H

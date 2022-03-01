@@ -14,6 +14,8 @@ public:
 
     friend class FluidEngineTools;
 
+    PtrField getField() const;
+
 private:
     void oneStep();
     inline void calcOnePoint(TCoord x, TCoord y, PtrField pOutField);

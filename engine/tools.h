@@ -11,6 +11,7 @@ LstArea separateUp4Threads(const TCount nThread);
 class PointsRange
 {
 public:
+    PointsRange(TCoord w, TCoord h);
     PointsRange(CPoint lt, CPoint rb);
     PointsRange(CArea a);
 
@@ -24,7 +25,7 @@ public:
     inline CPoint operator*()const {return m_iter;}
     inline TCoord X()const {return m_iter.x;}
     inline TCoord Y()const {return m_iter.y;}
-    inline bool isEnd()const {return m_iter == m_area.rb;}
+    inline bool isEnd()const {return m_iter.y == m_area.rb.y;}
 private:
     Area m_area;
     Point m_iter;

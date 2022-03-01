@@ -113,3 +113,8 @@ LstDirPoints FluidEngine::getNeighboursSolid(CPoint p, CField inF)
     return lst;
 }
 
+PtrField FluidEngine::getField() const
+{
+    return m_pField;
+}
+

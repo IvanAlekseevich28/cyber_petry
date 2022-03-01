@@ -1,12 +1,13 @@
 #include "fluidenginetools.h"
 #include "tools.h"
+#include <cstdlib>
 
 using namespace Eng;
 
 FluidEngineTools::FluidEngineTools(FluidEngine &eng) :
     m_eng(eng)
 {
-
+    srand(time(0));
 }
 
 void FluidEngineTools::clear()
@@ -29,6 +30,13 @@ void FluidEngineTools::fillFieldByLiquid(eLiquidType eLT, TLiquid val)
         curCell.arrLiquids[eLT] = val;
         ++pr;
     }
+}
+
+void FluidEngineTools::addRandomLiquid(TLiquid val)
+{
+    Point rp(rand() % MatW, rand() % MatH);
+    eLiquidType eLT = eLiquidType(rand() % LT__END);
+    addLiquid(rp, eLT, val);
 }
 
 bool FluidEngineTools::addLiquid(CPoint p, eLiquidType eLT, TLiquid val)
