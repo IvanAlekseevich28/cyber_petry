@@ -24,9 +24,9 @@ std::string Utils::bigLong2Str(long long num)
     else if (num < VAL_M)
         sstr << std::fixed << std::setprecision(1) << (double(num) / VAL_k) << "k";
     else if (num < VAL_G)
-        sstr << std::fixed << (num / VAL_M) << "M";
+        sstr << std::fixed << std::setprecision(1) << (num / VAL_M) << "M";
     else if ((long long)num < VAL_T)
-        sstr << std::fixed << (num / VAL_G) << "B";
+        sstr << std::fixed << std::setprecision(1) << (num / VAL_G) << "B";
     else
         sstr << "none";
 

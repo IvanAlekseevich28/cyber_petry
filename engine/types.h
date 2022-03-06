@@ -7,8 +7,8 @@
 
 namespace Eng
 {
-constexpr unsigned MatW = 100;
-constexpr unsigned MatH = 100;
+constexpr unsigned MatW = 150;
+constexpr unsigned MatH = 150;
 
 enum eLiquidType
 {

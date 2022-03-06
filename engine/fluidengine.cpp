@@ -7,7 +7,7 @@ FluidEngine::FluidEngine(SimParams param)
     : m_pField(new Field(0)), m_params(param)
 {
     // TODO
-    m_lstFlows = Tools::separateUp4Threads(1);
+    m_lstFlows = Tools::separateUp4Threads(8);
 }
 
 PtrField FluidEngine::step(TCount steps)
