@@ -33,10 +33,10 @@ enum eDirection : char
 };
 
 typedef int TLiquid;
-typedef int TFlow;
-typedef int TCoord;
-typedef unsigned TCount;
 typedef unsigned TLight;
+typedef int TCoord;
+typedef int TFlow;
+typedef unsigned TCount;
 typedef unsigned TFlags;
 
 struct SimParams
