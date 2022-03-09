@@ -2,7 +2,7 @@
 #define ENGINE_H
 
 #include <QObject>
-#include "engine/fluidengine.h"
+#include "core/engine/mainengine.h"
 #include "structs/info.h"
 #include <QElapsedTimer>
 

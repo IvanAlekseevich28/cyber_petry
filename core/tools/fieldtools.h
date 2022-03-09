@@ -1,13 +1,13 @@
 #pragma once
 
-#include "fluidengine.h"
+#include "../entities/field.h"
 
 namespace Eng
 {
-class FluidEngineTools
+class FieldTools
 {
 public:
-    FluidEngineTools(FluidEngine& eng);
+    FieldTools(PField pField);
 
     // tools
     void clear();
@@ -16,7 +16,9 @@ public:
     bool addLiquid(CPoint p, eLiquidType eLT, TLiquid val);
     bool rmLiquid (CPoint p, eLiquidType eLT, TLiquid val);
 
+    void setPField(const PField &newPField);
+
 private:
-    FluidEngine& m_eng;
+    PField m_pField;
 };
 }
