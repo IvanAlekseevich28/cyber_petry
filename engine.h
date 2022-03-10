@@ -21,7 +21,7 @@ public slots:
     void stop();
 
 signals:
-    void newData(Eng::PtrField field)const;
+    void newData(Eng::PField field)const;
     void newStep(int index)const;
     void newPerf(Info::Performance perf)const;
 

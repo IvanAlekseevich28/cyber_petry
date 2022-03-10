@@ -1,19 +1,21 @@
 #pragma once
 
-#include "../engine/types.h"
+#include "../core/entities/cell.h"
 #include "colorengine.h"
 #include "paintflags.h"
 #include <vector>
 
 namespace Draw
 {
+typedef std::pair<Eng::TLiquid, QColor> ValClr;
+typedef std::list<ValClr> LstValClr;
 
 class CellColor
 {
 public:
     CellColor(eDrawObjects eDO = DO__All);
     QColor getQColor(Eng::CCell cell)const;
-    QColor getColorLiquid(Eng::CCell cell, int index)const;
+    ValClr getColorLiquid(Eng::CCell cell, int index)const;
     eDrawObjects FDraw() const;
 
     void setFDraw(eDrawObjects newFDraw);

@@ -20,6 +20,7 @@ SOURCES += \
     draw/cellcolor.cpp \
     draw/colorengine.cpp \
     draw/colormixer.cpp \
+    draw/fieldcolor.cpp \
     engine.cpp \
     gamescreen.cpp \
     gui/infomonitor.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     draw/cellcolor.h \
     draw/colorengine.h \
     draw/colormixer.h \
+    draw/fieldcolor.h \
     draw/minmax.h \
     draw/paintflags.h \
     engine.h \

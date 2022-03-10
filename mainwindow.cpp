@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_engineThread.reset(new QThread(this));
 
-    qRegisterMetaType<Eng::PtrField>();
+    qRegisterMetaType<Eng::PField>();
     qRegisterMetaType<Info::Performance>();
     m_LCD = new QLCDNumber();
     m_LCD->setFixedHeight(100);
@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_step, SIGNAL(clicked()), this, SLOT(onStep()));
     connect(button_stop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(&m_eng, SIGNAL(newStep(int)), m_LCD, SLOT(display(int)));
-    connect(&m_eng, SIGNAL(newData(Eng::PtrField)), m_screen, SLOT(draw(Eng::PtrField)));
+    connect(&m_eng, SIGNAL(newData(Eng::PField)), m_screen, SLOT(draw(Eng::PField)));
     connect(&m_eng, SIGNAL(newPerf(Info::Performance)), m_imonitor, SLOT(newInfoPerformance(Info::Performance)));
     m_eng.sendData();
     m_imonitor->update();
@@ -73,7 +73,7 @@ void MainWindow::onStep()
     disconnect(m_engineThread.get(), SIGNAL(started()), &m_eng, nullptr);
     m_eng.moveToThread(m_engineThread.get());
     connect(m_engineThread.get(), SIGNAL(started()), &m_eng, SLOT(step()));
-    connect(&m_eng, SIGNAL(newData(Eng::PtrField)), m_engineThread.get(), SLOT(quit()));
+    connect(&m_eng, SIGNAL(newData(Eng::PField)), m_engineThread.get(), SLOT(quit()));
 
     m_engineThread->start();
 }

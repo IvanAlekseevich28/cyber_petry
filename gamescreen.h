@@ -13,7 +13,7 @@ public:
     QGameScreen(QWidget *parent = nullptr, int w = 1200, int h = 1200);
 
 public slots:
-    void draw(Eng::PtrField pField);
+    void draw(Eng::PField pField);
 
 protected:
     virtual void initializeGL() ;
@@ -24,7 +24,7 @@ protected:
     void drawMatrix();
 
 private:
-    Eng::PtrField m_pField;
+    Eng::PField m_pField;
     Draw::CellColor m_CellClr;
 };
 

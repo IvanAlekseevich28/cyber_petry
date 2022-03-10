@@ -17,7 +17,7 @@ int QEngine::step()
     m_perf.coac = 1;
     m_timer.start();
     const int countSteps = 1;
-    Eng::PtrField pField = m_eng.step(countSteps);
+    Eng::PField pField = m_eng.step(countSteps);
     calcPerformance(countSteps);
     m_step += countSteps;
 //    usleep(1000*5); // 0.5 sec

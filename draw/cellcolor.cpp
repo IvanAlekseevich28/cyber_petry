@@ -17,7 +17,7 @@ CellColor::CellColor(eDrawObjects eDO) : m_spectrumLenght(64), m_FDraw(eDO), m_f
 
 QColor CellColor::getQColor(Eng::CCell cell) const
 {
-    std::list<QColor> clrMix;
+    LstValClr clrMix;
     for (int i = 0; i < Eng::LT__END; i++)
         if (m_FDraw & (1 << i) && cell.arrLiquids[i] > 0)
             clrMix.push_back(getColorLiquid(cell, i));
@@ -25,9 +25,11 @@ QColor CellColor::getQColor(Eng::CCell cell) const
     return ColorMixer::mix(clrMix);
 }
 
-QColor CellColor::getColorLiquid(Eng::CCell cell, int index) const
+ValClr CellColor::getColorLiquid(Eng::CCell cell, int index) const
 {
-    return m_fluids[index].getColorByValue(cell.arrLiquids[index]);
+    const auto liquidVal = cell.arrLiquids[index];
+    const auto clr = m_fluids[index].getColorByValue(liquidVal);
+    return std::make_pair(liquidVal, clr);
 }
 
 eDrawObjects CellColor::FDraw() const

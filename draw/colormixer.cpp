@@ -1,4 +1,5 @@
 #include "colormixer.h"
+#include <algorithm>
 
 #define CHNLEN 256 // color channel lenght
 
@@ -29,6 +30,30 @@ QColor ColorMixer::mix(const std::list<QColor> &lstClr)
     for (; iter != lstClr.end(); iter++)
         addClr(base, *iter, partOf256);
     return base;
+}
+
+QColor ColorMixer::mix(const LstValClr &lstValClr)
+{
+    if (lstValClr.empty())
+        return QColor(255,255,255);
+
+    const long long valsSum = std::accumulate(lstValClr.begin(), lstValClr.end(), 0,
+                                              [](const ValClr& vc) {return vc.first;});
+    LstPartClr lstPartClr;
+    for (const auto& valClr : lstValClr)
+    {
+        TClrChannel partOf256 = (long long)valClr.first * CHNLEN / valsSum;
+        lstPartClr.push_back(std::make_pair(partOf256, valClr.second));
+    }
+
+    int r(0), g(0), b(0);
+    for (const auto& partClr : lstPartClr)
+    {
+        r += partClr.second.red()   * partClr.first / CHNLEN;
+        g += partClr.second.green() * partClr.first / CHNLEN;
+        b += partClr.second.blue()  * partClr.first / CHNLEN;
+    }
+    return QColor(r,g,b);
 }
 
 void ColorMixer::addClr(QColor &base, const QColor &extra, TClrChannel partOf256)

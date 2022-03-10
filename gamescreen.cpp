@@ -10,7 +10,7 @@ QGameScreen::QGameScreen(QWidget *parent, int w, int h) : QOpenGLWidget(parent)
     setFixedSize(w,h);
 }
 
-void QGameScreen::draw(Eng::PtrField pField)
+void QGameScreen::draw(Eng::PField pField)
 {
     m_pField = pField;
     update();
