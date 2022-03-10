@@ -11,7 +11,7 @@ QEngine::QEngine(QObject *parent) : QObject(parent),
 //    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
     for (int i = 0; i < 8; i++)
         etool.addRandomLiquid(0x000FFFFF);
-    etool.addRandomLiquid(0x02FFFFFFF);
+    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_water);
 }
 
 int QEngine::step()

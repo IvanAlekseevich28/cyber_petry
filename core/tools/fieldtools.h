@@ -13,6 +13,7 @@ public:
     void clear();
     void fillFieldByLiquid  (eLiquidType eLT, TLiquid val);
     void addRandomLiquid(TLiquid val);
+    void addRandomLiquid(TLiquid val, eLiquidType eLT);
     bool addLiquid(CPoint p, eLiquidType eLT, TLiquid val);
     bool rmLiquid (CPoint p, eLiquidType eLT, TLiquid val);
 

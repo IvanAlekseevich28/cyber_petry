@@ -36,10 +36,15 @@ void FieldTools::fillFieldByLiquid(eLiquidType eLT, TLiquid val)
 
 void FieldTools::addRandomLiquid(TLiquid val)
 {
+    eLiquidType eLT = eLiquidType(rand() % LT__END);
+    addRandomLiquid(val, eLT);
+}
+
+void FieldTools::addRandomLiquid(TLiquid val, eLiquidType eLT)
+{
     const auto matH = m_pField->getH();
 
     Point rp(rand() % m_pField->m.size(), rand() % matH);
-    eLiquidType eLT = eLiquidType(rand() % LT__END);
     addLiquid(rp, eLT, val);
 }
 

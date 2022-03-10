@@ -37,6 +37,9 @@ QColor ColorMixer::mix(const LstValClr &lstValClr)
     if (lstValClr.empty())
         return QColor(255,255,255);
 
+    if (lstValClr.size() == 1)
+        return lstValClr.front().second;
+
     long long valsSum =  0;
     for (const auto& valClr : lstValClr)
         valsSum += valClr.first;
