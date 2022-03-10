@@ -1,25 +1,27 @@
 #include "engine.h"
 #include <unistd.h>
-#include "engine/fluidenginetools.h"
+#include "core/tools/fieldtools.h"
 
+#define FIELDSIZE 200
 
 QEngine::QEngine(QObject *parent) : QObject(parent),
-    m_eng(Eng::SimParams(true)), m_step(0)
+    m_eng(Eng::initField(FIELDSIZE, FIELDSIZE)), m_step(0)
 {
-    Eng::FluidEngineTools etool(m_eng);
+    Eng::FieldTools etool(m_eng.getState());
 //    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
     for (int i = 0; i < 8; i++)
-        etool.addRandomLiquid(0x0FFFFFFF);
+        etool.addRandomLiquid(0x000FFFFF);
+    etool.addRandomLiquid(0x02FFFFFFF);
 }
 
 int QEngine::step()
 {
-    m_perf.coac = 1;
+    const int countThreads = 8;
+    m_perf.coac = countThreads;
     m_timer.start();
-    const int countSteps = 1;
-    Eng::PField pField = m_eng.step(countSteps);
-    calcPerformance(countSteps);
-    m_step += countSteps;
+    Eng::PField pField = m_eng.step(countThreads);
+    calcPerformance(1);
+    m_step += 1;
 //    usleep(1000*5); // 0.5 sec
     sendData();
     m_perf.coac = 0;
@@ -36,10 +38,10 @@ void QEngine::calcPerformance(int countSteps)
 {
     const qint64 spentTime = m_timer.elapsed();
 
-    if (m_eng.getField()->m.empty())
+    if (m_eng.getState()->m.empty())
         return;
 
-    const int countCells = m_eng.getField()->m.size() * m_eng.getField()->m[0].size();
+    const int countCells = m_eng.getState()->m.size() * m_eng.getState()->getH();
     m_spentTime += spentTime;
 
     m_perf.ctis = m_spentTime / 1000;
@@ -54,7 +56,7 @@ int QEngine::nStep() const
 
 void QEngine::sendData() const
 {
-    emit newData(m_eng.getField());
+    emit newData(m_eng.getState());
     emit newStep(nStep());
     emit newPerf(m_perf);
 }

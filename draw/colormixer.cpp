@@ -37,8 +37,10 @@ QColor ColorMixer::mix(const LstValClr &lstValClr)
     if (lstValClr.empty())
         return QColor(255,255,255);
 
-    const long long valsSum = std::accumulate(lstValClr.begin(), lstValClr.end(), 0,
-                                              [](const ValClr& vc) {return vc.first;});
+    long long valsSum =  0;
+    for (const auto& valClr : lstValClr)
+        valsSum += valClr.first;
+
     LstPartClr lstPartClr;
     for (const auto& valClr : lstValClr)
     {

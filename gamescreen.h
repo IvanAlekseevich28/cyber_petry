@@ -2,9 +2,8 @@
 
 #include <QOpenGLWidget>
 #include <QObject>
-#include "engine/types.h"
-#include "draw/colorengine.h"
-#include "draw/cellcolor.h"
+#include "core/entities/field.h"
+#include "draw/fieldcolor.h"
 
 class QGameScreen : public QOpenGLWidget
 {
@@ -20,7 +19,7 @@ protected:
     virtual void resizeGL(int nWidth, int nHeight);
     virtual void paintGL();
     void drawSquare(double x1, double y1, double sidelength);
-    void drawPixSquare(Eng::CCell cell, int x, int y, int size);
+    void drawPixSquare(const QColor& clr, int x, int y, int size);
     void drawMatrix();
 
 private:

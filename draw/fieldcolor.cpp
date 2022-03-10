@@ -8,10 +8,10 @@ namespace Draw
 PClrField initClrField(const unsigned w, const unsigned h, const QColor &base)
 {
     PClrField pf(new ClrField);
-    pf->reserve(w);
+    pf->resize(w);
     for (unsigned i = 0; i < w; i++)
     {
-        (*pf)[i].reserve(h);
+        (*pf)[i].resize(h);
         for (unsigned j = 0; j < h; j++)
             (*pf)[i][j] = base;
     }

@@ -3,7 +3,6 @@
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QPainter>
-#include "engine/tools.h"
 
 QGameScreen::QGameScreen(QWidget *parent, int w, int h) : QOpenGLWidget(parent)
 {
@@ -48,10 +47,9 @@ void QGameScreen::drawSquare(double x1, double y1, double sidelength)
     glEnd();
 }
 
-void QGameScreen::drawPixSquare(Eng::CCell cell, int x, int y, int size)
+void QGameScreen::drawPixSquare(const QColor& clr, int x, int y, int size)
 {
     QPainter p(this);
-    QColor clr = m_CellClr.getQColor(cell);
     p.setPen(clr);
     p.setBrush(QBrush(clr));
     //    p.drawLine(rect().topLeft(), rect().bottomRight());
@@ -61,19 +59,14 @@ void QGameScreen::drawPixSquare(Eng::CCell cell, int x, int y, int size)
 void QGameScreen::drawMatrix()
 {
     const auto vCellsCount = m_pField->m.size();
-    const auto hCellsCount = vCellsCount ? m_pField->m[0].size() : 0;
+    const auto hCellsCount = vCellsCount ? m_pField->getH() : 1;
     const auto vPixCount = height();
     const auto hPixCount = width();
     const auto vPixCellSize = vPixCount / vCellsCount;
     const auto hPixCellSize = hPixCount / hCellsCount;
 
-    Eng::Tools::PointsRange pr(vCellsCount, hCellsCount);
-    while (pr.isEnd() == false)
-    {
-        Eng::CCell cell = m_pField->m[pr.X()][pr.Y()];
-
-        drawPixSquare(cell, pr.X()*vPixCellSize, pr.Y()*hPixCellSize, vPixCellSize);
-
-        ++pr;
-    }
+    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 5);
+    for (unsigned x = 0; x < vCellsCount; x++)
+        for (unsigned y = 0; y < hCellsCount; y++)
+            drawPixSquare((*matrixClr)[x][y], x*vPixCellSize, y*hPixCellSize, vPixCellSize);
 }

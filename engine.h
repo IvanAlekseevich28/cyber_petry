@@ -29,7 +29,7 @@ private:
     void calcPerformance(int countSteps);
 
 private:
-    Eng::FluidEngine m_eng;
+    Eng::MainEngine m_eng;
     Info::Performance m_perf;
     QElapsedTimer m_timer;
     qint64 m_spentTime=0;
