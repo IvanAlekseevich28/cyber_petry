@@ -9,7 +9,7 @@ ChunkEngine::ChunkEngine(LstFunCalcs tasks) :
 PProcess ChunkEngine::step(PProcess proc, const TCount countThreads)
 {
     ThreadInfo ti(0, countThreads);
-    for (TCount i = 0; i < countThreads; i++)
+    for (TCount i = 0; i < countThreads-1; i++)
     {
         ti.indexThread = i;
         m_threads.push_back(
@@ -21,6 +21,9 @@ PProcess ChunkEngine::step(PProcess proc, const TCount countThreads)
                         std::ref(*(proc->curr)))
                     );
     }
+
+    ti.indexThread = countThreads-1;
+    threadCalc(m_pfCalcs, ti,*(proc->last), *(proc->curr));
 
     for (auto& thr : m_threads)
         thr.join();

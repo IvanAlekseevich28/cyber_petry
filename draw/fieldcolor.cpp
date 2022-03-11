@@ -37,7 +37,7 @@ PClrField convertField2Clr(const Eng::PField in, const CellColor& cc, const Eng:
     Eng::ThreadInfo ti(0, countThreads);
     PClrField pClrField = initClrField(in->m.size(), in->getH());
 
-    for (Eng::TCount i = 0; i < countThreads; i++)
+    for (Eng::TCount i = 0; i < countThreads-1; i++)
     {
         ti.indexThread = i;
         threads.push_back(
@@ -49,6 +49,8 @@ PClrField convertField2Clr(const Eng::PField in, const CellColor& cc, const Eng:
                         ti)
                     );
     }
+    ti.indexThread = countThreads-1;
+    Field2ClrThread(*in,*pClrField,cc,ti);
 
     for (auto& thr : threads)
         thr.join();

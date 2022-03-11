@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include "core/tools/fieldtools.h"
 
-#define FIELDSIZE 200
+#define FIELDSIZE 150
 
 QEngine::QEngine(QObject *parent) : QObject(parent),
     m_eng(Eng::initField(FIELDSIZE, FIELDSIZE)), m_step(0)
@@ -11,12 +11,14 @@ QEngine::QEngine(QObject *parent) : QObject(parent),
 //    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
     for (int i = 0; i < 8; i++)
         etool.addRandomLiquid(0x000FFFFF);
-    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_water);
+    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
+    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
+    etool.addRandomLiquid(0x02FFFFFFF, Eng::LT_acid);
 }
 
 int QEngine::step()
 {
-    const int countThreads = 8;
+    const int countThreads = 1;
     m_perf.coac = countThreads;
     m_timer.start();
     Eng::PField pField = m_eng.step(countThreads);

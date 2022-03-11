@@ -5,12 +5,12 @@ namespace Eng
 
 ChunkRng getRngOfThread(const ThreadInfo ti, const TCount len)
 {
-    const int chankLen = len / ti.countThreads;
-    const int chanksPlusOneCount = len % ti.countThreads;
+    const int chunkLen = len / ti.countThreads;
+    const int chunksPlusOneCount = len % ti.countThreads;
 
-    const int startRng = (chankLen*ti.indexThread) +
-            (chanksPlusOneCount % (ti.indexThread+1));
-    const int endRng = startRng + chankLen + int(chanksPlusOneCount > ti.indexThread);
+    const int startRng = (chunkLen*ti.indexThread) +
+            (ti.indexThread < chunksPlusOneCount ? ti.indexThread : chunksPlusOneCount);
+    const int endRng = startRng + chunkLen + int(chunksPlusOneCount > ti.indexThread);
 
     return std::make_pair(startRng, endRng);
 }

@@ -10,10 +10,10 @@ Field::Field(const TCoord w, const TCoord h) :
         m[i].resize(h);
 
     flowsRate.fill(1);
-    flowsRate[LT_acid] = 2;
+    flowsRate[LT_acid] = 4;
     flowsRate[LT_nitrogen] = 2;
-    flowsRate[LT_carbon] = 8;
-    flowsRate[LT_organic] = 4;
+    flowsRate[LT_carbon] = 32;
+    flowsRate[LT_organic] = 16;
 }
 
 Field::Field(const Field &oth) :

@@ -65,7 +65,7 @@ void QGameScreen::drawMatrix()
     const auto vPixCellSize = vPixCount / vCellsCount;
     const auto hPixCellSize = hPixCount / hCellsCount;
 
-    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 5);
+    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 2);
     for (unsigned x = 0; x < vCellsCount; x++)
         for (unsigned y = 0; y < hCellsCount; y++)
             drawPixSquare((*matrixClr)[x][y], x*vPixCellSize, y*hPixCellSize, vPixCellSize);
