@@ -26,6 +26,7 @@ private slots:
     void onStart();
     void onStep();
     void onStop();
+    void onReset();
     void setLCD(int num);
 
 

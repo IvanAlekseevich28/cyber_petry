@@ -1,31 +1,38 @@
 #include "engine.h"
 #include <unistd.h>
 #include "core/tools/fieldtools.h"
+#include <QDateTime>
 
-#define FIELDSIZE 150
+#define FIELDSIZE 200
 
 QEngine::QEngine(QObject *parent) : QObject(parent),
     m_eng(Eng::initField(FIELDSIZE, FIELDSIZE)), m_step(0)
 {
-    Eng::FieldTools etool(m_eng.getState());
-//    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
-    for (int i = 0; i < 8; i++)
-        etool.addRandomLiquid(0x000FFFFF);
-    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
-    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
-    etool.addRandomLiquid(0x02FFFFFFF, Eng::LT_acid);
+    reset();
 }
 
 int QEngine::step()
 {
-    const int countThreads = 1;
+    const int countThreads = 2;
     m_perf.coac = countThreads;
     m_timer.start();
-    Eng::PField pField = m_eng.step(countThreads);
+    m_eng.step(countThreads);
     calcPerformance(1);
     m_step += 1;
 //    usleep(1000*5); // 0.5 sec
-    sendData();
+
+    const qint64 timeForNextFrame = 1000 / m_FPSLimit;
+    if (m_FPSTimerLastFrame.isValid() == false)
+    {
+        m_FPSTimerLastFrame.start();
+        sendData();
+    } else if (m_FPSTimerLastFrame.elapsed() >= timeForNextFrame)
+    {
+        m_FPSTimerLastFrame.restart();
+        sendData();
+    } else if (m_start == false)
+        sendData();
+
     m_perf.coac = 0;
     return nStep();
 }
@@ -34,6 +41,23 @@ void QEngine::stop()
 {
     m_start = false;
     m_perf.coac = 0;
+    sendData();
+}
+
+void QEngine::reset()
+{
+    m_spentTime=0;
+    m_step=0;
+    m_start=false;
+    m_eng.setState(Eng::initField(FIELDSIZE, FIELDSIZE));
+
+    Eng::FieldTools etool(m_eng.getState());
+//    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
+    for (int i = 0; i < 8; i++)
+        etool.addRandomLiquid(0x000FFFFF);
+    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
+    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
+    etool.addRandomLiquid(0x02FFFFFFF, Eng::LT_acid);
 }
 
 void QEngine::calcPerformance(int countSteps)
@@ -58,9 +82,11 @@ int QEngine::nStep() const
 
 void QEngine::sendData() const
 {
+//    auto curTime = std::chrono::high_resolution_clock::now();
     emit newData(m_eng.getState());
     emit newStep(nStep());
     emit newPerf(m_perf);
+//    m_lastFrameTime = curTime;
 }
 
 void QEngine::loop()

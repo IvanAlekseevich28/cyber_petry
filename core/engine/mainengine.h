@@ -12,6 +12,8 @@ public:
     const PField step(const TCount countThreads=1);
     PField getState()const;
 
+    void setState(const PField &newPState);
+
 private:
     PField m_pState;
     std::list<PIEngine> m_engines;

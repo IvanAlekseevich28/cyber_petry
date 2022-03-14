@@ -5,6 +5,7 @@
 #include "core/engine/mainengine.h"
 #include "structs/info.h"
 #include <QElapsedTimer>
+#include <chrono>
 
 class QEngine : public QObject
 {
@@ -19,6 +20,7 @@ public slots:
     void loop();
     int step();
     void stop();
+    void reset();
 
 signals:
     void newData(Eng::PField field)const;
@@ -37,6 +39,14 @@ private:
 public:
     bool m_start;
     int m_step;
+
+private:
+    unsigned m_FPSLimit=24;
+    QElapsedTimer m_FPSTimerLastFrame;
+
+private:
+    double m_realFPS;
+    std::chrono::high_resolution_clock::time_point m_lastFrameTime;
 };
 
 #endif // ENGINE_H

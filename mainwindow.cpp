@@ -4,6 +4,7 @@
 #include <QLayout>
 #include <QPushButton>
 #include <QMetaType>
+#include <QMenu>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,8 +13,25 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     auto m_screen = new QGameScreen(this, 600, 600);
+    auto layout_game = new QVBoxLayout(this);
     auto layout_screen = new QHBoxLayout(this);
-    layout_screen->addWidget(m_screen);
+    layout_game->addWidget(m_screen);
+
+    auto layout_under_gs = new QHBoxLayout(this);
+
+    auto button_draw_param = new QPushButton("filters", this);
+    auto menu_draw = new QMenu(this);
+    menu_draw->addSection("water");
+    menu_draw->addSection("oxygen");
+    menu_draw->addSection("carbon");
+    menu_draw->addSection("nitrogen");
+    menu_draw->addSection("acid");
+    menu_draw->addSection("organic");
+
+    button_draw_param->setMenu(menu_draw);
+    layout_under_gs->addWidget(button_draw_param);
+    layout_game->addLayout(layout_under_gs);
+    layout_screen->addLayout(layout_game);
 
 
     m_engineThread.reset(new QThread(this));
@@ -27,10 +45,13 @@ MainWindow::MainWindow(QWidget *parent)
     auto button_start = new QPushButton("Start");
     auto button_step = new QPushButton("Step");
     auto button_stop = new QPushButton("Stop");
+    auto button_reset = new QPushButton("Reset");
     //     connect(button, SIGNAL(clicked()), this, SLOT(slotGetNumber()));
     connect(button_start, SIGNAL(clicked()), this, SLOT(onStart()));
     connect(button_step, SIGNAL(clicked()), this, SLOT(onStep()));
     connect(button_stop, SIGNAL(clicked()), this, SLOT(onStop()));
+    connect(button_reset, SIGNAL(clicked()), this, SLOT(onReset()));
+
     connect(&m_eng, SIGNAL(newStep(int)), m_LCD, SLOT(display(int)));
     connect(&m_eng, SIGNAL(newData(Eng::PField)), m_screen, SLOT(draw(Eng::PField)));
     connect(&m_eng, SIGNAL(newPerf(Info::Performance)), m_imonitor, SLOT(newInfoPerformance(Info::Performance)));
@@ -45,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout_buttons->addWidget(button_start);
     layout_buttons->addWidget(button_step);
     layout_buttons->addWidget(button_stop);
+    layout_buttons->addWidget(button_reset);
 
     layout_buttons->addSpacing(100);
     layout_screen->addLayout(layout_buttons);
@@ -81,6 +103,13 @@ void MainWindow::onStep()
 void MainWindow::onStop()
 {
     m_eng.stop();
+}
+
+void MainWindow::onReset()
+{
+    m_eng.reset();
+    m_LCD->display(0);
+    m_eng.sendData();
 }
 
 void MainWindow::setLCD(int num)
