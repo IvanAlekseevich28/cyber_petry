@@ -7,12 +7,13 @@
 QGameScreen::QGameScreen(QWidget *parent, int w, int h) : QOpenGLWidget(parent)
 {
     setFixedSize(w,h);
+//    m_pLastClrField = Draw::initClrField(w,h);
 }
 
 void QGameScreen::draw(Eng::PField pField)
 {
     m_pField = pField;
-    update();
+    paintGL();
 }
 
 void QGameScreen::initializeGL()
@@ -32,6 +33,7 @@ void QGameScreen::paintGL()
         drawMatrix();
 }
 
+
 void QGameScreen::drawSquare(double x1, double y1, double sidelength)
 {
     double halfside = sidelength / 2;
@@ -49,11 +51,10 @@ void QGameScreen::drawSquare(double x1, double y1, double sidelength)
 
 void QGameScreen::drawPixSquare(const QColor& clr, int x, int y, int size)
 {
-    QPainter p(this);
-    p.setPen(clr);
-    p.setBrush(QBrush(clr));
+    m_painter.setPen(clr);
+    m_painter.setBrush(clr);
     //    p.drawLine(rect().topLeft(), rect().bottomRight());
-    p.drawRect(x, y, size, size);
+    m_painter.drawRect(x, y, size, size);
 }
 
 void QGameScreen::drawMatrix()
@@ -65,8 +66,21 @@ void QGameScreen::drawMatrix()
     const auto vPixCellSize = vPixCount / vCellsCount;
     const auto hPixCellSize = hPixCount / hCellsCount;
 
-    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 8);
+    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 2);
+    if (m_pLastClrField.get() == nullptr)
+        m_pLastClrField = Draw::initClrField(vCellsCount, hCellsCount);
+
+    m_painter.begin(this);
     for (unsigned x = 0; x < vCellsCount; x++)
+    {
+        const auto coordX = x*vPixCellSize;
         for (unsigned y = 0; y < hCellsCount; y++)
-            drawPixSquare((*matrixClr)[x][y], x*vPixCellSize, y*hPixCellSize, vPixCellSize);
+        {
+            const auto& curPixel = (*matrixClr)[x][y];
+            if (curPixel != (*m_pLastClrField)[x][y])
+                drawPixSquare(curPixel, coordX, y*hPixCellSize, vPixCellSize);
+        }
+    }
+    m_painter.end();
+    m_pLastClrField = std::move(matrixClr);
 }

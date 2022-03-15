@@ -19,16 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     auto layout_under_gs = new QHBoxLayout(this);
 
-    auto button_draw_param = new QPushButton("filters", this);
-    auto menu_draw = new QMenu(this);
-    menu_draw->addSection("water");
-    menu_draw->addSection("oxygen");
-    menu_draw->addSection("carbon");
-    menu_draw->addSection("nitrogen");
-    menu_draw->addSection("acid");
-    menu_draw->addSection("organic");
-
-    button_draw_param->setMenu(menu_draw);
+    auto button_draw_param = new QDrawSettings(this);
     layout_under_gs->addWidget(button_draw_param);
     layout_game->addLayout(layout_under_gs);
     layout_screen->addLayout(layout_game);

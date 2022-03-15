@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "gamescreen.h"
 #include "gui/infomonitor.h"
+#include "gui/drawsettings.h"
 #include <QThread>
 #include <QLCDNumber>
 #include <memory>

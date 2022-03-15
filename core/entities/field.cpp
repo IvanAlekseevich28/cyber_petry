@@ -29,10 +29,10 @@ bool Field::inField(CPoint p) const
 Points Field::getNeighbours(CPoint p) const
 {
     Points lst;
-    if (p.x != (TCoord)m.size()-1)      lst.push_back(Point(p.x+1, p.y));
-    if (p.x != 0)                       lst.push_back(Point(p.x-1, p.y));
-    if (p.y != (TCoord)m[0].size()-1)   lst.push_back(Point(p.x, p.y+1));
-    if (p.y != 0)                       lst.push_back(Point(p.x, p.y-1));
+    if (p.x != (TCoord)m.size()-1)      lst.emplace_back(p.x+1, p.y);
+    if (p.x != 0)                       lst.emplace_back(p.x-1, p.y);
+    if (p.y != (TCoord)m[0].size()-1)   lst.emplace_back(p.x, p.y+1);
+    if (p.y != 0)                       lst.emplace_back(p.x, p.y-1);
 
     return lst;
 }

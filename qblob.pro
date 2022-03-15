@@ -23,6 +23,7 @@ SOURCES += \
     draw/fieldcolor.cpp \
     engine.cpp \
     gamescreen.cpp \
+    gui/drawsettings.cpp \
     gui/infomonitor.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     draw/paintflags.h \
     engine.h \
     gamescreen.h \
+    gui/drawsettings.h \
     gui/infomonitor.h \
     mainwindow.h \
     structs/info.h \

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QOpenGLWidget>
-#include <QObject>
+#include <QPainter>
 #include "core/entities/field.h"
 #include "draw/fieldcolor.h"
 
@@ -23,7 +23,9 @@ protected:
     void drawMatrix();
 
 private:
+    QPainter m_painter;
     Eng::PField m_pField;
     Draw::CellColor m_CellClr;
+    Draw::PClrField m_pLastClrField;
 };
 
