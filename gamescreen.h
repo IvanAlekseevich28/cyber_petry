@@ -18,7 +18,7 @@ protected:
     virtual void initializeGL() ;
     virtual void resizeGL(int nWidth, int nHeight);
     virtual void paintGL();
-    void drawSquare(double x1, double y1, double sidelength);
+    void drawSquare(const QColor &clr, double x1, double y1, double sidelength);
     void drawPixSquare(const QColor& clr, int x, int y, int size);
     void drawMatrix();
 

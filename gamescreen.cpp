@@ -34,19 +34,18 @@ void QGameScreen::paintGL()
 }
 
 
-void QGameScreen::drawSquare(double x1, double y1, double sidelength)
+void QGameScreen::drawSquare(const QColor& clr, double x1, double y1, double sidelength)
 {
-    double halfside = sidelength / 2;
 
-    glColor3d(0,1,0);
-    glBegin(GL_TRIANGLE_FAN);
+        glColor3d(clr.redF(),clr.greenF(),clr.blueF());
+        glBegin(GL_TRIANGLE_FAN);
 
-    glVertex2d(x1 + halfside, y1 + halfside);
-    glVertex2d(x1 + halfside, y1 - halfside);
-    glVertex2d(x1 - halfside, y1 - halfside);
-    glVertex2d(x1 - halfside, y1 + halfside);
+        glVertex2d(x1, y1);
+        glVertex2d(x1 + sidelength, y1);
+        glVertex2d(x1 + sidelength, y1 + sidelength);
+        glVertex2d(x1, y1 + sidelength);
 
-    glEnd();
+        glEnd();
 }
 
 void QGameScreen::drawPixSquare(const QColor& clr, int x, int y, int size)
@@ -66,21 +65,25 @@ void QGameScreen::drawMatrix()
     const auto vPixCellSize = vPixCount / vCellsCount;
     const auto hPixCellSize = hPixCount / hCellsCount;
 
-    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 2);
+    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 4);
     if (m_pLastClrField.get() == nullptr)
         m_pLastClrField = Draw::initClrField(vCellsCount, hCellsCount);
 
-    m_painter.begin(this);
+    glLoadIdentity();
+    glTranslatef(-1,1,0);
+    glRotatef(180, 1,0,0);
+    glScalef(2.0/vCellsCount, 2.0/hCellsCount, 1);
+
     for (unsigned x = 0; x < vCellsCount; x++)
     {
-        const auto coordX = x*vPixCellSize;
+//        const auto coordX = x*vPixCellSize;
         for (unsigned y = 0; y < hCellsCount; y++)
         {
             const auto& curPixel = (*matrixClr)[x][y];
-            if (curPixel != (*m_pLastClrField)[x][y])
-                drawPixSquare(curPixel, coordX, y*hPixCellSize, vPixCellSize);
+//            if (curPixel != (*m_pLastClrField)[x][y])
+//                drawPixSquare(curPixel, coordX, y*hPixCellSize, vPixCellSize);
+                drawSquare(curPixel,x,y, 1);
         }
     }
-    m_painter.end();
     m_pLastClrField = std::move(matrixClr);
 }

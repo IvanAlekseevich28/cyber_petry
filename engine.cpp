@@ -3,7 +3,7 @@
 #include "core/tools/fieldtools.h"
 #include <QDateTime>
 
-#define FIELDSIZE 600
+#define FIELDSIZE 200
 
 QEngine::QEngine(QObject *parent) : QObject(parent),
     m_eng(Eng::initField(FIELDSIZE, FIELDSIZE)), m_step(0)
@@ -13,7 +13,7 @@ QEngine::QEngine(QObject *parent) : QObject(parent),
 
 int QEngine::step()
 {
-    const int countThreads = 3;
+    const int countThreads = 8;
     m_perf.coac = countThreads;
     m_timer.start();
     m_eng.step(countThreads);
@@ -52,12 +52,12 @@ void QEngine::reset()
     m_eng.setState(Eng::initField(FIELDSIZE, FIELDSIZE));
 
     Eng::FieldTools etool(m_eng.getState());
-//    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
-    for (int i = 0; i < 64; i++)
+    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
+    for (int i = 0; i < 16; i++)
         etool.addRandomLiquid(0x000FFFFF);
     etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
     etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
-    etool.addRandomLiquid(0x02FFFFFFF, Eng::LT_acid);
+    etool.addRandomLiquid(0x01FFFFFFF, Eng::LT_water);
 }
 
 void QEngine::calcPerformance(int countSteps)
