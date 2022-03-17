@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    auto m_screen = new QGameScreen(this, 600, 600);
+    auto m_screen = new QGameScreen(this, 950, 950);
     auto layout_game = new QVBoxLayout(this);
     auto layout_screen = new QHBoxLayout(this);
     layout_game->addWidget(m_screen);
