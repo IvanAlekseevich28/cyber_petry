@@ -53,7 +53,9 @@ HEADERS += \
     gui/infomonitor.h \
     mainwindow.h \
     structs/info.h \
-    utils/strnum.h
+
+    structs/size.h \
+
 
 FORMS += \
     mainwindow.ui

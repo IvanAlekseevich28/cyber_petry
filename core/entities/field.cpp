@@ -10,10 +10,10 @@ Field::Field(const TCoord w, const TCoord h) :
         m[i].resize(h);
 
     flowsRate.fill(1);
-    flowsRate[LT_acid] = 2;
+    flowsRate[LT_acid] = 4;
     flowsRate[LT_nitrogen] = 2;
-    flowsRate[LT_carbon] = 8;
-    flowsRate[LT_organic] = 4;
+    flowsRate[LT_carbon] = 32;
+    flowsRate[LT_organic] = 16;
 }
 
 Field::Field(const Field &oth) :
@@ -29,10 +29,10 @@ bool Field::inField(CPoint p) const
 Points Field::getNeighbours(CPoint p) const
 {
     Points lst;
-    if (p.x != (TCoord)m.size()-1)      lst.push_back(Point(p.x+1, p.y));
-    if (p.x != 0)                       lst.push_back(Point(p.x-1, p.y));
-    if (p.y != (TCoord)m[0].size()-1)   lst.push_back(Point(p.x, p.y+1));
-    if (p.y != 0)                       lst.push_back(Point(p.x, p.y-1));
+    if (p.x != (TCoord)m.size()-1)      lst.emplace_back(p.x+1, p.y);
+    if (p.x != 0)                       lst.emplace_back(p.x-1, p.y);
+    if (p.y != (TCoord)m[0].size()-1)   lst.emplace_back(p.x, p.y+1);
+    if (p.y != 0)                       lst.emplace_back(p.x, p.y-1);
 
     return lst;
 }
@@ -40,6 +40,10 @@ Points Field::getNeighbours(CPoint p) const
 TCount Field::getMatrixLen() const
 {
     return m.size() * m[0].size();
+}
+PField initField(const TSize &sz)
+{
+    return initField(sz.w, sz.h);
 }
 
 PField initField(const TCoord w, const TCoord h)

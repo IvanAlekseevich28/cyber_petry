@@ -26,4 +26,9 @@ PField MainEngine::getState() const
 {
     return m_pState;
 }
+
+void MainEngine::setState(const PField &newPState)
+{
+    m_pState = newPState;
+}
 }

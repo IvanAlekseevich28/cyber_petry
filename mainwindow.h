@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "gamescreen.h"
 #include "gui/infomonitor.h"
+#include "gui/drawsettings.h"
 #include <QThread>
 #include <QLCDNumber>
 #include <memory>
@@ -26,6 +27,7 @@ private slots:
     void onStart();
     void onStep();
     void onStop();
+    void onReset();
     void setLCD(int num);
 
 
