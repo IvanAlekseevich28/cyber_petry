@@ -12,7 +12,7 @@ QEngine::QEngine(TSize matSize, QObject *parent) : QObject(parent),
 
 int QEngine::step()
 {
-    const int countThreads = 3;
+    const int countThreads = 12;
     m_perf.coac = countThreads;
     m_timer.start();
     m_eng.step(countThreads);

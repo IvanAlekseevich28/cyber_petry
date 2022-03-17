@@ -6,7 +6,7 @@
 #include <QMetaType>
 #include <QMenu>
 
-#define FIELDSIZE 950
+#define FIELDSIZE 425
 #define SCRSIZE 950
 
 MainWindow::MainWindow(QWidget *parent)
@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout_under_gs->addWidget(button_draw_param);
     layout_game->addLayout(layout_under_gs);
     layout_screen->addLayout(layout_game);
+    connect(button_draw_param, SIGNAL(newFlags(int)), m_screen, SLOT(setDrawFlags(int)));
 
 
     m_engineThread.reset(new QThread(this));

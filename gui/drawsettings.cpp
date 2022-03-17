@@ -30,11 +30,13 @@ void QDrawSettings::addAction(QString name, Draw::eDrawObjects dr)
 
 void QDrawSettings::sendFlags()
 {
-    Draw::eDrawObjects flags = Draw::DO_none;
+    int flags = Draw::DO_none;
     for (unsigned i = 0; i < m_actFlags.size() ; i++)
     {
         auto& flag = m_actFlags[i];
         if (flag.second->isChecked())
-            flags = Draw::eDrawObjects(1 << i);
+            flags += (int)flag.first;
     }
+
+    emit newFlags(flags);
 }

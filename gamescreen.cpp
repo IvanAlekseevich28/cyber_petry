@@ -4,7 +4,10 @@
 #include <QOpenGLFunctions>
 #include <QPainter>
 
-QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *parent) : QOpenGLWidget(parent), m_matSize(matSize)
+QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *parent) :
+    QOpenGLWidget(parent),
+    m_matSize(matSize),
+    m_drawFlags(Draw::DO__All)
 {
     setFixedSize(scrSize.w,scrSize.h);
 //    m_pLastClrField = Draw::initClrField(w,h);
@@ -13,6 +16,12 @@ QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *pa
 void QGameScreen::draw(Eng::PField pField)
 {
     m_pField = pField;
+    update();
+}
+
+void QGameScreen::setDrawFlags(int flags)
+{
+    m_drawFlags = flags;
     update();
 }
 
@@ -35,6 +44,8 @@ void QGameScreen::paintGL()
 {
     if (m_pField.get())
         drawMatrix();
+
+    emit ready();
 }
 
 
@@ -54,7 +65,9 @@ void QGameScreen::drawMatrix()
     const auto vCellsCount = m_pField->m.size();
     const auto hCellsCount = vCellsCount ? m_pField->getH() : 1;
 
+    m_CellClr.setFDraw(m_drawFlags);
     auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 2);
+
     if (m_pLastClrField.get() == nullptr)
         m_pLastClrField = Draw::initClrField(vCellsCount, hCellsCount);
 
