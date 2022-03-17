@@ -2,6 +2,7 @@
 
 #include "cell.h"
 #include "point.h"
+#include "../../structs/size.h"
 #include <vector>
 #include <memory>
 
@@ -26,10 +27,13 @@ struct Field
     TCount getMatrixLen()const;
     inline TCount getH()const
         {return m[0].size();}
+    inline TSize getSize()const
+        {return TSize(m.size(), getH());}
 };
 typedef std::shared_ptr<Field> PField;
 typedef const Field& CField;
 
 PField initField(const TCoord w, const TCoord h);
+PField initField(const TSize& sz);
 }
 Q_DECLARE_METATYPE(Eng::PField);

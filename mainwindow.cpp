@@ -6,13 +6,16 @@
 #include <QMetaType>
 #include <QMenu>
 
+#define FIELDSIZE 950
+#define SCRSIZE 950
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), m_eng(TSize(FIELDSIZE))
 {
     ui->setupUi(this);
 
-    auto m_screen = new QGameScreen(this, 950, 950);
+    auto m_screen = new QGameScreen(TSize(SCRSIZE), TSize(FIELDSIZE), this);
     auto layout_game = new QVBoxLayout(this);
     auto layout_screen = new QHBoxLayout(this);
     layout_game->addWidget(m_screen);

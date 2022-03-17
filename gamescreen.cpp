@@ -4,9 +4,9 @@
 #include <QOpenGLFunctions>
 #include <QPainter>
 
-QGameScreen::QGameScreen(QWidget *parent, int w, int h) : QOpenGLWidget(parent)
+QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *parent) : QOpenGLWidget(parent), m_matSize(matSize)
 {
-    setFixedSize(w,h);
+    setFixedSize(scrSize.w,scrSize.h);
 //    m_pLastClrField = Draw::initClrField(w,h);
 }
 
@@ -18,6 +18,10 @@ void QGameScreen::draw(Eng::PField pField)
 
 void QGameScreen::initializeGL()
 {
+    glLoadIdentity();
+    glTranslatef(-1,1,0);
+    glRotatef(180, 1,0,0);
+    glScalef(2.0/m_matSize.w, 2.0/m_matSize.h, 1);
     QOpenGLFunctions* pFunc = QOpenGLContext::currentContext()->functions();
     pFunc->glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 }
@@ -36,24 +40,13 @@ void QGameScreen::paintGL()
 
 void QGameScreen::drawSquare(const QColor& clr, double x1, double y1, double sidelength)
 {
-
         glColor3d(clr.redF(),clr.greenF(),clr.blueF());
-        glBegin(GL_TRIANGLE_FAN);
 
         glVertex2d(x1, y1);
         glVertex2d(x1 + sidelength, y1);
         glVertex2d(x1 + sidelength, y1 + sidelength);
         glVertex2d(x1, y1 + sidelength);
 
-        glEnd();
-}
-
-void QGameScreen::drawPixSquare(const QColor& clr, int x, int y, int size)
-{
-    m_painter.setPen(clr);
-    m_painter.setBrush(clr);
-    //    p.drawLine(rect().topLeft(), rect().bottomRight());
-    m_painter.drawRect(x, y, size, size);
 }
 
 void QGameScreen::drawMatrix()
@@ -65,11 +58,8 @@ void QGameScreen::drawMatrix()
     if (m_pLastClrField.get() == nullptr)
         m_pLastClrField = Draw::initClrField(vCellsCount, hCellsCount);
 
-    glLoadIdentity();
-    glTranslatef(-1,1,0);
-    glRotatef(180, 1,0,0);
-    glScalef(2.0/vCellsCount, 2.0/hCellsCount, 1);
-
+//    glPushMatrix();
+    glBegin(GL_QUADS);
     for (unsigned x = 0; x < vCellsCount; x++) {
         for (unsigned y = 0; y < hCellsCount; y++)
         {
@@ -78,5 +68,8 @@ void QGameScreen::drawMatrix()
                 drawSquare(curPixel,x,y, 1);
         }
     }
+    glEnd();
+//    glPopMatrix();
+
     m_pLastClrField = std::move(matrixClr);
 }

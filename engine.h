@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "core/engine/mainengine.h"
+#include "structs/size.h"
 #include "structs/info.h"
 #include <QElapsedTimer>
 #include <chrono>
@@ -11,7 +12,7 @@ class QEngine : public QObject
 {
     Q_OBJECT
 public:
-    explicit QEngine(QObject *parent = nullptr);
+    explicit QEngine(TSize matSize, QObject *parent = nullptr);
 
     int nStep() const;
     void sendData()const;
@@ -35,6 +36,7 @@ private:
     Info::Performance m_perf;
     QElapsedTimer m_timer;
     qint64 m_spentTime=0;
+    TSize m_matSize;
 
 public:
     bool m_start;

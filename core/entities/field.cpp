@@ -41,6 +41,10 @@ TCount Field::getMatrixLen() const
 {
     return m.size() * m[0].size();
 }
+PField initField(const TSize &sz)
+{
+    return initField(sz.w, sz.h);
+}
 
 PField initField(const TCoord w, const TCoord h)
 {

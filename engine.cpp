@@ -3,10 +3,9 @@
 #include "core/tools/fieldtools.h"
 #include <QDateTime>
 
-#define FIELDSIZE 1900
 
-QEngine::QEngine(QObject *parent) : QObject(parent),
-    m_eng(Eng::initField(FIELDSIZE, FIELDSIZE)), m_step(0)
+QEngine::QEngine(TSize matSize, QObject *parent) : QObject(parent),
+    m_eng(Eng::initField(matSize)), m_matSize(matSize), m_step(0)
 {
     reset();
 }
@@ -49,7 +48,7 @@ void QEngine::reset()
     m_spentTime=0;
     m_step=0;
     m_start=false;
-    m_eng.setState(Eng::initField(FIELDSIZE, FIELDSIZE));
+    m_eng.setState(Eng::initField(m_matSize));
 
     Eng::FieldTools etool(m_eng.getState());
 //    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
