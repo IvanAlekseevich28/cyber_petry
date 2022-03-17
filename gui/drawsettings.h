@@ -19,6 +19,9 @@ private:
 private slots:
     void sendFlags();
 
+signals:
+    void newFlags(int);
+
 private:
     std::vector<Flag> m_actFlags;
     QMenu* m_pMenu=nullptr;

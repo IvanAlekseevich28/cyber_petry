@@ -25,6 +25,7 @@ SOURCES += \
     gamescreen.cpp \
     gui/drawsettings.cpp \
     gui/infomonitor.cpp \
+    gui/screencontroller.cpp \
     main.cpp \
     mainwindow.cpp \
     utils/strnum.cpp
@@ -51,6 +52,7 @@ HEADERS += \
     gamescreen.h \
     gui/drawsettings.h \
     gui/infomonitor.h \
+    gui/screencontroller.h \
     mainwindow.h \
     structs/info.h \
     structs/size.h \

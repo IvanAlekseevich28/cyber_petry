@@ -32,12 +32,12 @@ ValClr CellColor::getColorLiquid(Eng::CCell cell, int index) const
     return std::make_pair(liquidVal, clr);
 }
 
-eDrawObjects CellColor::FDraw() const
+int CellColor::FDraw() const
 {
     return m_FDraw;
 }
 
-void CellColor::setFDraw(eDrawObjects newFDraw)
+void CellColor::setFDraw(int newFDraw)
 {
     m_FDraw = newFDraw;
 }

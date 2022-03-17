@@ -14,6 +14,10 @@ public:
 
 public slots:
     void draw(Eng::PField pField);
+    void setDrawFlags(int flags = Draw::DO__All);
+
+signals:
+    void ready();
 
 protected:
     virtual void initializeGL() ;
@@ -27,5 +31,6 @@ private:
     Eng::PField m_pField;
     Draw::CellColor m_CellClr;
     Draw::PClrField m_pLastClrField;
+    int m_drawFlags;
 };
 
