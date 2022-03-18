@@ -12,11 +12,14 @@ QEngine::QEngine(TSize matSize, QObject *parent) : QObject(parent),
 
 int QEngine::step()
 {
-    const int countThreads = 12;
+    const int countThreads = 4;
     m_perf.coac = countThreads;
-    m_timer.start();
+
+    auto t1 = std::chrono::high_resolution_clock::now();
     m_eng.step(countThreads);
-    calcPerformance(1);
+    auto t2 = std::chrono::high_resolution_clock::now();
+    long duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+    calcPerformance(duration);
     m_step += 1;
 //    usleep(1000*5); // 0.5 sec
 
@@ -59,19 +62,17 @@ void QEngine::reset()
     etool.addRandomLiquid(0x0FFFFFFFF, Eng::LT_water);
 }
 
-void QEngine::calcPerformance(int countSteps)
+void QEngine::calcPerformance(int duration)
 {
-    const qint64 spentTime = m_timer.elapsed();
-
     if (m_eng.getState()->m.empty())
         return;
 
     const int countCells = m_eng.getState()->m.size() * m_eng.getState()->getH();
-    m_spentTime += spentTime;
+    m_spentTime += duration;
 
-    m_perf.ctis = m_spentTime / 1000;
-    m_perf.fups = 1.0 / ((double)spentTime / 1000 / countSteps);
-    m_perf.cups = m_perf.fups * countCells;
+    m_perf.ctis = m_spentTime / 1000000;
+    m_perf.ups = 1.0 / ((double)duration / 1000000);
+    m_perf.cups = m_perf.ups * countCells;
 }
 
 int QEngine::nStep() const

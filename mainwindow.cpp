@@ -6,7 +6,7 @@
 #include <QMetaType>
 #include <QMenu>
 
-#define FIELDSIZE 425
+#define FIELDSIZE 950
 #define SCRSIZE 950
 
 MainWindow::MainWindow(QWidget *parent)
@@ -49,7 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(&m_eng, SIGNAL(newStep(int)), m_LCD, SLOT(display(int)));
     connect(&m_eng, SIGNAL(newData(Eng::PField)), m_screen, SLOT(draw(Eng::PField)));
-    connect(&m_eng, SIGNAL(newPerf(Info::Performance)), m_imonitor, SLOT(newInfoPerformance(Info::Performance)));
+    connect(&m_eng,   SIGNAL(newPerf(Info::Performance)), m_screen, SLOT(getEnginePerformance(Info::Performance)));
+    connect(m_screen, SIGNAL(newPerf(Info::Performance)), m_imonitor, SLOT(newInfoPerformance(Info::Performance)));
     m_eng.sendData();
     m_imonitor->update();
     connect(button_stop, SIGNAL(clicked()), m_engineThread.get(), SLOT(quit()));

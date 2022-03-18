@@ -5,6 +5,7 @@
 #include <structs/size.h>
 #include "core/entities/field.h"
 #include "draw/fieldcolor.h"
+#include "structs/info.h"
 
 class QGameScreen : public QOpenGLWidget
 {
@@ -15,9 +16,11 @@ public:
 public slots:
     void draw(Eng::PField pField);
     void setDrawFlags(int flags = Draw::DO__All);
+    void getEnginePerformance(Info::Performance perf);
 
 signals:
     void ready();
+    void newPerf(Info::Performance perf)const;
 
 protected:
     virtual void initializeGL() ;
@@ -26,11 +29,15 @@ protected:
     void drawSquare(const QColor &clr, double x1, double y1, double sidelength);
     void drawMatrix();
 
+    void calcPerformance(long duration);
+
 private:
     TSize m_matSize;
     Eng::PField m_pField;
     Draw::CellColor m_CellClr;
     Draw::PClrField m_pLastClrField;
     int m_drawFlags;
+
+    Info::Performance m_perf;
 };
 

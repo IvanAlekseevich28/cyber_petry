@@ -4,6 +4,8 @@
 #include <QOpenGLFunctions>
 #include <QPainter>
 
+#include <chrono>
+
 QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *parent) :
     QOpenGLWidget(parent),
     m_matSize(matSize),
@@ -15,14 +17,26 @@ QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *pa
 
 void QGameScreen::draw(Eng::PField pField)
 {
+    auto t1 = std::chrono::high_resolution_clock::now();
+
     m_pField = pField;
     update();
+
+    auto t2 = std::chrono::high_resolution_clock::now();
+    long duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+
+    calcPerformance(duration);
 }
 
 void QGameScreen::setDrawFlags(int flags)
 {
     m_drawFlags = flags;
     update();
+}
+
+void QGameScreen::getEnginePerformance(Info::Performance perf)
+{
+    m_perf = perf;
 }
 
 void QGameScreen::initializeGL()
@@ -66,7 +80,7 @@ void QGameScreen::drawMatrix()
     const auto hCellsCount = vCellsCount ? m_pField->getH() : 1;
 
     m_CellClr.setFDraw(m_drawFlags);
-    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 2);
+    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 1);
 
     if (m_pLastClrField.get() == nullptr)
         m_pLastClrField = Draw::initClrField(vCellsCount, hCellsCount);
@@ -85,4 +99,10 @@ void QGameScreen::drawMatrix()
 //    glPopMatrix();
 
     m_pLastClrField = std::move(matrixClr);
+}
+
+void QGameScreen::calcPerformance(long duration)
+{
+    m_perf.fps = 1000000.0 / duration;
+    emit newPerf(m_perf);
 }

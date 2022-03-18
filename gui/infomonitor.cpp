@@ -56,7 +56,8 @@ void QInfoMonitor::paintGL()
 void QInfoMonitor::drawPerformance(Info::Performance perf)
 {
     drawParametr(" CUPS", QString::fromStdString(Utils::bigLong2Str(perf.cups)));
-    drawParametr(" FUPS", perf.fups);
+    drawParametr("  UPS", perf.ups);
+    drawParametr("  FPS", QString::fromStdString(Utils::bigLong2Str(perf.fps)));
     drawParametr(" Time", QString::fromStdString(Utils::secondsToTime(perf.ctis)));
     drawParametr("Cores", perf.coac);
 }

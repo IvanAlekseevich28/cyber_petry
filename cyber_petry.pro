@@ -55,8 +55,7 @@ HEADERS += \
     gui/screencontroller.h \
     mainwindow.h \
     structs/info.h \
-
-    structs/size.h \
+    structs/size.h
 
 
 FORMS += \

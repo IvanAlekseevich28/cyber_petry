@@ -29,12 +29,11 @@ signals:
     void newPerf(Info::Performance perf)const;
 
 private:
-    void calcPerformance(int countSteps);
+    void calcPerformance(int duration);
 
 private:
     Eng::MainEngine m_eng;
     Info::Performance m_perf;
-    QElapsedTimer m_timer;
     qint64 m_spentTime=0;
     TSize m_matSize;
 
