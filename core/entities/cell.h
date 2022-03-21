@@ -17,6 +17,7 @@ enum eLiquidType
 };
 
 typedef int TLiquid;
+typedef int TWave;
 typedef unsigned TCount;
 typedef std::array<TLiquid, LT__END> TLiquids;
 
@@ -24,7 +25,11 @@ struct Cell
 {
     TLiquids arrLiquids;
 
+    TWave wave1;
+    TWave wave2;
+
     Cell();
+    Cell(const Cell& oth);
     void clear();
 
 };

@@ -16,6 +16,7 @@ public:
     CellColor(eDrawObjects eDO = DO__All);
     QColor getQColor(Eng::CCell cell)const;
     ValClr getColorLiquid(Eng::CCell cell, int index)const;
+    ValClr getColorWave(Eng::CCell cell)const;
     int FDraw() const;
 
     void setFDraw(int newFDraw);
@@ -24,5 +25,6 @@ private:
     int m_spectrumLenght=32;
     int m_FDraw;   // flags
     std::vector<ColorEngine> m_fluids;
+    ColorEngine m_waves;
 };
 }

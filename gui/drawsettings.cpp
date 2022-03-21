@@ -12,6 +12,7 @@ QDrawSettings::QDrawSettings(QWidget* parent):
     addAction("nitrogen",   Draw::DO_nitrogen);
     addAction("acid",       Draw::DO_acid);
     addAction("organic",    Draw::DO_organic);
+    addAction("waves",      Draw::DO_waves);
 
     for (const auto& act : m_actFlags)
         m_pMenu->addAction(act.second.get());

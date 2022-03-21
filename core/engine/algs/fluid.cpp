@@ -13,13 +13,6 @@ inline void applyNeighbourLiquid(CCell nbr, Cell& curr, TLiquid flowRate, eLiqui
     curr.arrLiquids[eLT] += nbr.arrLiquids[eLT] / flowRate;
 }
 
-inline TCount getCountNeighbours(const TCoord x, const TCoord y, const TCoord matW, const TCoord matH)
-{
-    if (x >= 0 && y >= 0 && x < matW && y < matH) return 4;
-    if ((x >= 0 && y >= 0) || (x < matW && y < matH)) return 3;
-    return 2;
-}
-
 void calcFluids(const ChunkRng rng, const Field& in, Field& out)
 {
     const TCoord matW = in.m.size();

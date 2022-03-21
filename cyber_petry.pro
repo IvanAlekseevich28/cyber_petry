@@ -11,6 +11,7 @@ CONFIG += c++14
 SOURCES += \
     core/engine/algs/fluid.cpp \
     core/engine/algs/threads.cpp \
+    core/engine/algs/waves.cpp \
     core/engine/chunkengine.cpp \
     core/engine/mainengine.cpp \
     core/entities/cell.cpp \

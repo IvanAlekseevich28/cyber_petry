@@ -24,6 +24,7 @@ enum eDrawObjects
     DO_nitrogen =0x08,
     DO_acid     =0x10,
     DO_organic  =0x20,
+    DO_waves    =0x40,
 
     DO__All = 0xffffffff
 };

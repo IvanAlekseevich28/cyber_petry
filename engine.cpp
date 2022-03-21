@@ -55,12 +55,17 @@ void QEngine::reset()
 
     Eng::FieldTools etool(m_eng.getState());
 //    etool.fillFieldByLiquid(Eng::LT_water, 0x0FFFFFFF);
-    for (int i = 0; i < 4096; i++)
-        etool.addRandomLiquid(0x00FFFFFF);
-    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
-    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
-    etool.addRandomLiquid(0x0FFFFFFFF, Eng::LT_water);
+//    for (int i = 0; i < 4096; i++)
+//        etool.addRandomLiquid(0x00FFFFFF);
+//    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
+//    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
+//    etool.addRandomLiquid(0x0FFFFFFFF, Eng::LT_water);
 //    etool.addLiquid(Eng::Point(0,0), Eng::LT_water, 100);
+//    for (int i = 0; i < 4; i++)
+    etool.addWaveHeight(Eng::Point(550,550), 0x10000);
+    etool.addWaveHeight(Eng::Point(150,150), 0x10000);
+    etool.addWaveHeight(Eng::Point(350,350), 0x10000);
+    etool.addWaveHeight(Eng::Point(150,350), 0x10000);
 }
 
 void QEngine::calcPerformance(int duration)

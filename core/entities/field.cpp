@@ -14,10 +14,13 @@ Field::Field(const TCoord w, const TCoord h) :
     flowsRate[LT_nitrogen] = 2*5;
     flowsRate[LT_carbon] = 32*5;
     flowsRate[LT_organic] = 16*5;
+
+    wavePowerLosingPow2 = 8;
 }
 
 Field::Field(const Field &oth) :
-    m(oth.m), flowsRate(oth.flowsRate), index(oth.index + 1) {}
+    m(oth.m), flowsRate(oth.flowsRate), index(oth.index + 1),
+    wavePowerLosingPow2(oth.wavePowerLosingPow2) {}
 
 bool Field::inField(CPoint p) const
 {

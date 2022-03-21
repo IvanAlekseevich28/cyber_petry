@@ -64,6 +64,25 @@ bool FieldTools::rmLiquid(CPoint p, eLiquidType eLT, TLiquid val)
     return addLiquid(p, eLT, -val);
 }
 
+bool FieldTools::addWaveHeight(CPoint p, TWave val)
+{
+    if (false == m_pField->inField(p))
+        return false;
+
+    Cell& curCell = m_pField->m[p.x][p.y];
+    curCell.wave1 += val;
+
+    return true;
+}
+
+void FieldTools::addRandomWaveHeight(TLiquid val)
+{
+    const auto matH = m_pField->getH();
+
+    Point rp(rand() % m_pField->m.size(), rand() % matH);
+    addWaveHeight(rp, val);
+}
+
 void FieldTools::setPField(const PField &newPField)
 {
     m_pField = newPField;

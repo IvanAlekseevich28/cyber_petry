@@ -11,7 +11,12 @@ CellColor::CellColor(eDrawObjects eDO) : m_spectrumLenght(64), m_FDraw(eDO), m_f
     ColorEngine(0xffff00, Draw::ClrEngParams(255, 166, 31, m_spectrumLenght)),
     ColorEngine(0xff00ff, Draw::ClrEngParams(255,  98, 27, m_spectrumLenght)),
     ColorEngine(0x00ff00, Draw::ClrEngParams(255,  64, 28, m_spectrumLenght))
-} {
+},
+m_waves
+(
+    ColorEngine(0x000000, Draw::ClrEngParams(255,   0, 16, m_spectrumLenght))
+)
+{
 
 }
 
@@ -22,6 +27,9 @@ QColor CellColor::getQColor(Eng::CCell cell) const
         if (m_FDraw & (1 << i) && cell.arrLiquids[i] > 0)
             clrMix.push_back(getColorLiquid(cell, i));
 
+    if (m_FDraw & DO_waves && cell.wave1 > 0)
+        clrMix.push_back(getColorWave(cell));
+
     return ColorMixer::mix(clrMix);
 }
 
@@ -30,6 +38,13 @@ ValClr CellColor::getColorLiquid(Eng::CCell cell, int index) const
     const auto liquidVal = cell.arrLiquids[index];
     const auto clr = m_fluids[index].getColorByValue(liquidVal);
     return std::make_pair(liquidVal, clr);
+}
+
+ValClr CellColor::getColorWave(Eng::CCell cell) const
+{
+    const auto waveVal = cell.wave1;
+    const auto clr = m_waves.getColorByValue(waveVal);
+    return std::make_pair(waveVal, clr);
 }
 
 int CellColor::FDraw() const

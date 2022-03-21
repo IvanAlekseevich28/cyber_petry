@@ -16,6 +16,7 @@ struct Field
 {
     CellMatrix m;
     TLiquids flowsRate;
+    TCount wavePowerLosingPow2;
 
     const unsigned index;
 

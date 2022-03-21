@@ -7,7 +7,7 @@ namespace Eng
 MainEngine::MainEngine(PField state) :
     m_pState(state)
 {
-    LstFunCalcs tasks {calcFluids};
+    LstFunCalcs tasks {calcFluids, calcWaves};
     m_engines.push_back(PIEngine(new ChunkEngine(tasks)));
 }
 
