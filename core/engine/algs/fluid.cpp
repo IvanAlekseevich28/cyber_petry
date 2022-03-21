@@ -4,32 +4,54 @@ namespace Eng
 {
 inline void stayLiquid(CCell last, Cell& curr, TCount cn, TLiquid flowRate, eLiquidType eLT)
 {
-    TLiquid forNeighbours = cn * (last.arrLiquids[eLT] / 5 / flowRate);
+    TLiquid forNeighbours = cn * (last.arrLiquids[eLT] / flowRate);
     curr.arrLiquids[eLT] = last.arrLiquids[eLT] - forNeighbours;
 }
 
 inline void applyNeighbourLiquid(CCell nbr, Cell& curr, TLiquid flowRate, eLiquidType eLT)
 {
-    curr.arrLiquids[eLT] += nbr.arrLiquids[eLT] / 5 / flowRate;
+    curr.arrLiquids[eLT] += nbr.arrLiquids[eLT] / flowRate;
+}
+
+inline TCount getCountNeighbours(const TCoord x, const TCoord y, const TCoord matW, const TCoord matH)
+{
+    if (x >= 0 && y >= 0 && x < matW && y < matH) return 4;
+    if ((x >= 0 && y >= 0) || (x < matW && y < matH)) return 3;
+    return 2;
 }
 
 void calcFluids(const ChunkRng rng, const Field& in, Field& out)
 {
-    for (int i = rng.first; i < rng.second; i++)
-    {
-        int x = i % in.m.size();
-        int y = i / in.m.size();
+    const TCoord matW = in.m.size();
+    const TCoord matH = in.getH();
+    const TCoord maskX[] = {-1, 1, 0, 0};
+    const TCoord maskY[] = { 0, 0,-1, 1};
+    constexpr int maskLen = sizeof (maskX) / sizeof (TCoord);
 
-        auto lstNbs = in.getNeighbours(Point(x,y));
+    for (TCoord i = rng.first; i < rng.second; i++)
+    {
+        TCoord x = i % in.m.size();
+        TCoord y = i / in.m.size();
+
         CCell inCell = in.m[x][y];
         Cell& outCell = out.m[x][y];
 
-        for (TCount i = 0; i < LT__END; i++)
+        TCount countNbrs = getCountNeighbours(x, y, matW, matH);
+        for (TCount liq = 0; liq < LT__END; liq++)
+            stayLiquid(inCell, outCell, countNbrs, in.flowsRate[liq], (eLiquidType)liq);
+        for (int nbr = 0; nbr < maskLen; nbr++)
         {
-            stayLiquid(inCell, outCell, lstNbs.size(), in.flowsRate[i], (eLiquidType)i);
-            for (CPoint n : lstNbs)
-                applyNeighbourLiquid(in.m[n.x][n.y], outCell, in.flowsRate[i], (eLiquidType)i);
+            const TCoord nX = x + maskX[nbr];
+            const TCoord nY = y + maskY[nbr];
+            if (nY >= matH || nX >= matW || nX < 0 || nY < 0)
+                continue;
+
+            for (TCount liq = 0; liq < LT__END; liq++)
+                applyNeighbourLiquid(in.m[nX][nY], outCell, in.flowsRate[liq], (eLiquidType)liq);
+
         }
+
+
     }
 }
 }

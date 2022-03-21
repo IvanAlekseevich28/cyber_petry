@@ -12,7 +12,7 @@ QEngine::QEngine(TSize matSize, QObject *parent) : QObject(parent),
 
 int QEngine::step()
 {
-    const int countThreads = 4;
+    const int countThreads = 14;
     m_perf.coac = countThreads;
 
     auto t1 = std::chrono::high_resolution_clock::now();
@@ -60,6 +60,7 @@ void QEngine::reset()
     etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
     etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
     etool.addRandomLiquid(0x0FFFFFFFF, Eng::LT_water);
+//    etool.addLiquid(Eng::Point(0,0), Eng::LT_water, 100);
 }
 
 void QEngine::calcPerformance(int duration)

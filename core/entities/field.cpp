@@ -9,11 +9,11 @@ Field::Field(const TCoord w, const TCoord h) :
     for (int i = 0; i < w; i++)
         m[i].resize(h);
 
-    flowsRate.fill(1);
-    flowsRate[LT_acid] = 4;
-    flowsRate[LT_nitrogen] = 2;
-    flowsRate[LT_carbon] = 32;
-    flowsRate[LT_organic] = 16;
+    flowsRate.fill(5);
+    flowsRate[LT_acid] = 4*5;
+    flowsRate[LT_nitrogen] = 2*5;
+    flowsRate[LT_carbon] = 32*5;
+    flowsRate[LT_organic] = 16*5;
 }
 
 Field::Field(const Field &oth) :
