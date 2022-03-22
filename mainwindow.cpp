@@ -6,7 +6,7 @@
 #include <QMetaType>
 #include <QMenu>
 
-#define FIELDSIZE 950
+#define FIELDSIZE 75
 #define SCRSIZE 950
 
 MainWindow::MainWindow(QWidget *parent)

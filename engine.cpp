@@ -12,7 +12,7 @@ QEngine::QEngine(TSize matSize, QObject *parent) : QObject(parent),
 
 int QEngine::step()
 {
-    const int countThreads = 14;
+    const int countThreads = 1;
     m_perf.coac = countThreads;
 
     auto t1 = std::chrono::high_resolution_clock::now();
@@ -63,9 +63,9 @@ void QEngine::reset()
 //    etool.addLiquid(Eng::Point(0,0), Eng::LT_water, 100);
 //    for (int i = 0; i < 4; i++)
     for (int i = 0; i < 2; i++)
-        etool.addRandomWaveHeight(0x8000);
-    for (int i = 0; i < 1; i++)
-        etool.addRandomWaveHeight(-0x20000);
+        etool.addRandomWaveHeight(0x1000);
+//    for (int i = 0; i < 1; i++)
+//        etool.addRandomWaveHeight(-0x20000);
 //    etool.addRandomWaveHeight(0x4000);
 //    etool.addRandomWaveHeight(0x100000);
 }

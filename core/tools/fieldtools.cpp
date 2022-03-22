@@ -64,6 +64,16 @@ bool FieldTools::rmLiquid(CPoint p, eLiquidType eLT, TLiquid val)
     return addLiquid(p, eLT, -val);
 }
 
+bool FieldTools::addWaveNbrHeight(CPoint p, TWave val)
+{
+    addWaveHeight(p, val);
+    auto lstNbr = m_pField->getNeighbours(p);
+    for (const auto nbr : lstNbr)
+        addWaveHeight(nbr, -(val / lstNbr.size()));
+
+    return true;
+}
+
 bool FieldTools::addWaveHeight(CPoint p, TWave val)
 {
     if (false == m_pField->inField(p))
@@ -71,7 +81,7 @@ bool FieldTools::addWaveHeight(CPoint p, TWave val)
 
     Cell& curCell = m_pField->m[p.x][p.y];
     curCell.wave1 += val;
-    curCell.wave2 += val/2;
+    curCell.wave2 = 0;
 
     return true;
 }
@@ -81,7 +91,7 @@ void FieldTools::addRandomWaveHeight(TWave val)
     const auto matH = m_pField->getH();
 
     Point rp(rand() % m_pField->m.size(), rand() % matH);
-    addWaveHeight(rp, val);
+    addWaveNbrHeight(rp, val);
 }
 
 void FieldTools::setPField(const PField &newPField)

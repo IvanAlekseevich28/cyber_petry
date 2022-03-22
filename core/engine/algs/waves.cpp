@@ -49,6 +49,7 @@ void rendWaves (const ChunkRng rng, const Field& in, Field& out)
     const TCoord matH = out.getH();
     const TCoord maskX[] = {-1, 0, 1,-1, 0, 1,-1, 0, 1};
     const TCoord maskY[] = {-1,-1,-1, 0, 0, 0, 1, 1, 1};
+    const TCoord maskM[] = { 1, 2, 1, 2, 6, 2, 1, 2, 1};
 
 //    const TCoord maskX[] = {-1, 1, 0, 0, 0};
 //    const TCoord maskY[] = { 0, 0,-1, 1, 0};
@@ -73,10 +74,10 @@ void rendWaves (const ChunkRng rng, const Field& in, Field& out)
 
             CCell inNbrCell = out.m[nX][nY];
 
-            sumLastNbrWaves += inNbrCell.wave1;
+            sumLastNbrWaves += inNbrCell.wave1 * maskM[nbr];
             countNbrs++;
         }
-        outCell.wave = sumLastNbrWaves / countNbrs;
+        outCell.wave = sumLastNbrWaves / countNbrs / 2;
     }
 }
 }
