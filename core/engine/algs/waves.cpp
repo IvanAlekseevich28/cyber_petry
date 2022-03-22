@@ -33,7 +33,7 @@ void calcWaves(const ChunkRng rng, const Field& in, Field& out)
             countNbrs++;
         }
 
-        CCell inCell = in.m[y][x];
+        CCell inCell = in.m[x][y];
         outCell.wave2 = outCell.wave1;
 
         outCell.wave1 =  (sumLastNbrWaves / 2) - inCell.wave2;

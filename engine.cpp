@@ -62,10 +62,10 @@ void QEngine::reset()
 //    etool.addRandomLiquid(0x0FFFFFFFF, Eng::LT_water);
 //    etool.addLiquid(Eng::Point(0,0), Eng::LT_water, 100);
 //    for (int i = 0; i < 4; i++)
-    etool.addWaveHeight(Eng::Point(550,550), 0x10000);
-    etool.addWaveHeight(Eng::Point(150,150), 0x10000);
-    etool.addWaveHeight(Eng::Point(350,350), 0x10000);
-    etool.addWaveHeight(Eng::Point(150,350), 0x10000);
+    for (int i = 0; i < 10; i++)
+        etool.addRandomWaveHeight(0x10000);
+    etool.addRandomWaveHeight(0x40000);
+//    etool.addRandomWaveHeight(0x100000);
 }
 
 void QEngine::calcPerformance(int duration)
