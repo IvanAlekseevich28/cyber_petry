@@ -35,7 +35,7 @@ QColor ColorMixer::mix(const std::list<QColor> &lstClr)
 QColor ColorMixer::mix(const LstValClr &lstValClr)
 {
     if (lstValClr.empty())
-        return QColor(255,255,255);
+        return QColor(127,127,127);
 
     if (lstValClr.size() == 1)
         return lstValClr.front().second;

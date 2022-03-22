@@ -59,12 +59,12 @@ void QEngine::reset()
 //        etool.addRandomLiquid(0x00FFFFFF);
 //    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_carbon);
 //    etool.addRandomLiquid(0x04FFFFFFF, Eng::LT_organic);
-//    etool.addRandomLiquid(0x0FFFFFFFF, Eng::LT_water);
+//    etool.addRandomLiquid(0x0FFFFFFFF, Eng::LT_acid);
 //    etool.addLiquid(Eng::Point(0,0), Eng::LT_water, 100);
 //    for (int i = 0; i < 4; i++)
-    for (int i = 0; i < 10; i++)
-        etool.addRandomWaveHeight(0x10000);
-    etool.addRandomWaveHeight(0x40000);
+    for (int i = 0; i < 6; i++)
+        etool.addRandomWaveHeight(0x8000);
+//    etool.addRandomWaveHeight(0x4000);
 //    etool.addRandomWaveHeight(0x100000);
 }
 

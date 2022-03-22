@@ -42,7 +42,7 @@ public:
     int m_step;
 
 private:
-    unsigned m_FPSLimit=24;
+    unsigned m_FPSLimit=240;
     QElapsedTimer m_FPSTimerLastFrame;
 
 private:

@@ -13,5 +13,7 @@ inline TCount getCountNeighbours(const TCoord x, const TCoord y, const TCoord ma
 }
 
 void calcFluids(const ChunkRng rng, const Field& in, Field& out);
+
 void calcWaves (const ChunkRng rng, const Field& in, Field& out);
+void rendWaves (const ChunkRng rng, const Field& in, Field& out);
 }

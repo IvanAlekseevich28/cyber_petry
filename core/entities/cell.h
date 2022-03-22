@@ -25,6 +25,7 @@ struct Cell
 {
     TLiquids arrLiquids;
 
+    TWave wave; // rendered wave
     TWave wave1;
     TWave wave2;
 

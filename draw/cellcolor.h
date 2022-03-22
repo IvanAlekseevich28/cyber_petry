@@ -2,6 +2,7 @@
 
 #include "../core/entities/cell.h"
 #include "colorengine.h"
+#include "gradientengine.h"
 #include "paintflags.h"
 #include <vector>
 
@@ -25,6 +26,6 @@ private:
     int m_spectrumLenght=32;
     int m_FDraw;   // flags
     std::vector<ColorEngine> m_fluids;
-    ColorEngine m_waves;
+    GradientEngine m_waves;
 };
 }

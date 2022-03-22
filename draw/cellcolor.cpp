@@ -14,7 +14,7 @@ CellColor::CellColor(eDrawObjects eDO) : m_spectrumLenght(64), m_FDraw(eDO), m_f
 },
 m_waves
 (
-    ColorEngine(0x000000, Draw::ClrEngParams(255,   0, 16, m_spectrumLenght))
+    GradientEngine(Qt::white, Qt::black)
 )
 {
 
@@ -27,7 +27,7 @@ QColor CellColor::getQColor(Eng::CCell cell) const
         if (m_FDraw & (1 << i) && cell.arrLiquids[i] > 0)
             clrMix.push_back(getColorLiquid(cell, i));
 
-    if (m_FDraw & DO_waves && cell.wave1 > 0)
+    if (m_FDraw & DO_waves && cell.wave > 0)
         clrMix.push_back(getColorWave(cell));
 
     return ColorMixer::mix(clrMix);
@@ -42,8 +42,10 @@ ValClr CellColor::getColorLiquid(Eng::CCell cell, int index) const
 
 ValClr CellColor::getColorWave(Eng::CCell cell) const
 {
-    const auto waveVal = cell.wave1;
+    auto waveVal = cell.wave;
     const auto clr = m_waves.getColorByValue(waveVal);
+    waveVal = waveVal > 0 ? waveVal : -waveVal;
+
     return std::make_pair(waveVal, clr);
 }
 
