@@ -18,7 +18,7 @@ public:
     bool rmLiquid (CPoint p, eLiquidType eLT, TLiquid val);
 
     bool addWaveHeight(CPoint p, TWave val);
-    void addRandomWaveHeight(TLiquid val);
+    void addRandomWaveHeight(TWave val);
 
     void setPField(const PField &newPField);
 

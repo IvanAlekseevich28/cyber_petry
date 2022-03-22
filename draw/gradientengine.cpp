@@ -15,13 +15,20 @@ QColor GradientEngine::getColorByValue(const int value) const
     if (value == 0)
         return Qt::gray;
     if (value < 0)
-        return Qt::white;
+    {
+        for (int i = 0; i < 16; i++)
+            if (-value > (1 << (15 - i)))
+            {
+                int c = 128 + (i << 3);
+                return QColor(c,c,c);
+            }
+    }
 
     for (int i = 0; i < 16; i++)
         if (value > (1 << (15 - i)))
         {
-            int c = i << 2;
+            int c = i << 3;
             return QColor(c,c,c);
         }
-
+    return Qt::gray;
 }

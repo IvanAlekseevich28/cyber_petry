@@ -71,12 +71,12 @@ bool FieldTools::addWaveHeight(CPoint p, TWave val)
 
     Cell& curCell = m_pField->m[p.x][p.y];
     curCell.wave1 += val;
-    curCell.wave2 += val;
+    curCell.wave2 += val/2;
 
     return true;
 }
 
-void FieldTools::addRandomWaveHeight(TLiquid val)
+void FieldTools::addRandomWaveHeight(TWave val)
 {
     const auto matH = m_pField->getH();
 
