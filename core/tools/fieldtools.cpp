@@ -1,10 +1,14 @@
 #include "fieldtools.h"
 #include <cstdlib>
+#include <ctime>
 
 using namespace Eng;
 
 FieldTools::FieldTools(PField pField) :
-    m_pField(pField) {}
+    m_pField(pField)
+{
+    srand(time(0));
+}
 
 void FieldTools::clear()
 {

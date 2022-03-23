@@ -51,6 +51,7 @@ HEADERS += \
     draw/gradientengine.h \
     draw/minmax.h \
     draw/paintflags.h \
+    draw/types.h \
     engine.h \
     gamescreen.h \
     gui/drawsettings.h \

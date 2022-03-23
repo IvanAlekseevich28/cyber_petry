@@ -6,14 +6,10 @@
 #include <QColor>
 #include <string>
 #include "minmax.h"
+#include "types.h"
 
 namespace Draw
 {
-typedef unsigned TRGB;
-typedef unsigned TIntNum;
-typedef double TFltNum;
-typedef std::map<TIntNum, QColor> TScale;
-
 struct ClrEngParams
 {
     MinMax S = MinMax(16,255);

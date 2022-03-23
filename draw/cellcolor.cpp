@@ -14,7 +14,7 @@ CellColor::CellColor(eDrawObjects eDO) : m_spectrumLenght(64), m_FDraw(eDO), m_f
 },
 m_waves
 (
-    GradientEngine(Qt::white, Qt::black)
+    GradientEngine(m_spectrumLenght, 0x100000, Qt::white, Qt::gray, Qt::black)
 )
 {
 
