@@ -15,17 +15,11 @@ QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *pa
 //    m_pLastClrField = Draw::initClrField(w,h);
 }
 
-void QGameScreen::draw(Eng::PField pField)
+void QGameScreen::draw(Eng::PField pField, unsigned countCores)
 {
-    auto t1 = std::chrono::high_resolution_clock::now();
-
+    m_countCores = countCores;
     m_pField = pField;
     update();
-
-    auto t2 = std::chrono::high_resolution_clock::now();
-    long duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
-
-    calcPerformance(duration);
 }
 
 void QGameScreen::setDrawFlags(int flags)
@@ -80,7 +74,7 @@ void QGameScreen::drawMatrix()
     const auto hCellsCount = vCellsCount ? m_pField->getH() : 1;
 
     m_CellClr.setFDraw(m_drawFlags);
-    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, 1);
+    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, m_countCores);
 
     if (m_pLastClrField.get() == nullptr)
         m_pLastClrField = Draw::initClrField(vCellsCount, hCellsCount);

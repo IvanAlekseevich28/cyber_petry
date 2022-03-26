@@ -7,7 +7,7 @@ namespace Eng
 class FieldTools
 {
 public:
-    FieldTools(PField pField);
+    FieldTools(PField pField = {});
 
     // tools
     void clear();

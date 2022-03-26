@@ -6,8 +6,8 @@ void calcWaves(const ChunkRng rng, const Field& in, Field& out)
 {
     const TCoord matW = in.m.size();
     const TCoord matH = in.getH();
-    const TCoord maskX[] = {-1, 1, 0, 0};
-    const TCoord maskY[] = { 0, 0,-1, 1};
+    const TCoord maskX[] = {   -1,    1,    0,    0};
+    const TCoord maskY[] = {    0,    0,   -1,    1};
     constexpr int maskLen = sizeof (maskX) / sizeof (TCoord);
 
     for (TCoord i = rng.first; i < rng.second; i++)
@@ -36,7 +36,7 @@ void calcWaves(const ChunkRng rng, const Field& in, Field& out)
         CCell inCell = in.m[x][y];
         outCell.wave2 = outCell.wave1;
 
-        outCell.wave1 =  (sumLastNbrWaves / 2) - inCell.wave2;
+        outCell.wave1 =  (sumLastNbrWaves >> 1) - inCell.wave2;
         outCell.wave1 -= (outCell.wave1 >> in.wavePowerLosingPow2); // losing wave power
 
         outCell.wave = outCell.wave1;

@@ -30,6 +30,8 @@ struct Field
         {return m[0].size();}
     inline TSize getSize()const
         {return TSize(m.size(), getH());}
+    inline TCount getResolution()const
+        {return m.size() * getH();}
 };
 typedef std::shared_ptr<Field> PField;
 typedef const Field& CField;

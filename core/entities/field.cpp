@@ -19,8 +19,8 @@ Field::Field(const TCoord w, const TCoord h) :
 }
 
 Field::Field(const Field &oth) :
-    m(oth.m), flowsRate(oth.flowsRate), index(oth.index + 1),
-    wavePowerLosingPow2(oth.wavePowerLosingPow2) {}
+    m(oth.m), flowsRate(oth.flowsRate),
+    wavePowerLosingPow2(oth.wavePowerLosingPow2), index(oth.index + 1) {}
 
 bool Field::inField(CPoint p) const
 {

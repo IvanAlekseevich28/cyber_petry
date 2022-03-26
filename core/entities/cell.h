@@ -31,6 +31,8 @@ struct Cell
 
     Cell();
     Cell(const Cell& oth);
+    Cell operator+(const Cell& oth)const;
+    Cell& operator+=(const Cell& oth);
     void clear();
 
 };

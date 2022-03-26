@@ -18,6 +18,7 @@ SOURCES += \
     core/entities/field.cpp \
     core/entities/process.cpp \
     core/tools/fieldtools.cpp \
+    core/tools/inputengine.cpp \
     draw/cellcolor.cpp \
     draw/colorengine.cpp \
     draw/colormixer.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
     gui/screencontroller.cpp \
     main.cpp \
     mainwindow.cpp \
+    simulation.cpp \
     utils/strnum.cpp
 
 HEADERS += \
@@ -42,8 +44,10 @@ HEADERS += \
     core/entities/cell.h \
     core/entities/field.h \
     core/entities/point.h \
+    core/entities/poscell.h \
     core/entities/process.h \
     core/tools/fieldtools.h \
+    core/tools/inputengine.h \
     draw/cellcolor.h \
     draw/colorengine.h \
     draw/colormixer.h \
@@ -58,6 +62,7 @@ HEADERS += \
     gui/infomonitor.h \
     gui/screencontroller.h \
     mainwindow.h \
+    simulation.h \
     structs/info.h \
     structs/size.h
 
