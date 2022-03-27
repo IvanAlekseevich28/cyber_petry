@@ -8,7 +8,7 @@ namespace Eng
 class MainEngine
 {
 public:
-    MainEngine(PField state = {});
+    MainEngine(PField state);
     const PField step(const TCount countThreads=1);
     PField getState()const;
 

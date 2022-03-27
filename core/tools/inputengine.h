@@ -8,7 +8,7 @@ namespace Eng
 class InputEngine
 {
 public:
-    InputEngine();
+    InputEngine(PField pFld);
     bool input(PField pFld);
     void reset();
 

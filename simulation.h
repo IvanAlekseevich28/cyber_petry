@@ -13,9 +13,9 @@
 struct SimParametrs
 {
     unsigned FPSLimit=30;
-    unsigned countCores=1;
-    TSize matrixSize;
-    TSize screenSize;
+    int countCores=1;
+    TSize matrixSize=TSize(0);
+    TSize screenSize=TSize(0);
     int seed=time(0);
 };
 
@@ -37,9 +37,10 @@ class Simulation : public QObject
 {
     Q_OBJECT
 public:
-    explicit Simulation(const SimParametrs& settings, PQGameScreen pScreen = {},
-                        PQInfoMonitor pInfoM = {}, QObject *parent = nullptr);
+    explicit Simulation(const SimParametrs& settings, QObject *parent = nullptr);
 
+    PQGameScreen initGameScreen();
+    PQInfoMonitor initInfoMonitor(TSize size);
 
 public slots:
     void loop();
@@ -62,8 +63,8 @@ signals:
 private:
     SimParametrs m_simPar;
 
-    Eng::InputEngine m_engInput;
     Eng::MainEngine m_engSim;
+    Eng::InputEngine m_engInput;
 
     PWeakQGameScreen m_pScreen;
     PWeakQInfoMonitor m_pInfoMonitor;
@@ -74,4 +75,6 @@ private:
 
     bool m_isLoop;
 };
+
+typedef std::unique_ptr<Simulation> PSimulation;
 

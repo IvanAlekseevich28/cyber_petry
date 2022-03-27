@@ -11,14 +11,24 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), m_eng(TSize(FIELDSIZE))
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    auto m_screen = new QGameScreen(TSize(SCRSIZE), TSize(FIELDSIZE), this);
+    SimParametrs spar;
+    spar.matrixSize = TSize(FIELDSIZE);
+    spar.screenSize = TSize(SCRSIZE);
+    spar.countCores = std::thread::hardware_concurrency() - 1;
+    if (spar.countCores < 1)
+        spar.countCores = 1;
+
+    m_pSimulation.reset(new Simulation(spar, this));
+    m_pScreen = m_pSimulation->initGameScreen();
+    m_pImonitor = m_pSimulation->initInfoMonitor(TSize(180, 360));
+
     auto layout_game = new QVBoxLayout(this);
     auto layout_screen = new QHBoxLayout(this);
-    layout_game->addWidget(m_screen);
+    layout_game->addWidget(m_pScreen.get());
 
     auto layout_under_gs = new QHBoxLayout(this);
 
@@ -26,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout_under_gs->addWidget(button_draw_param);
     layout_game->addLayout(layout_under_gs);
     layout_screen->addLayout(layout_game);
-    connect(button_draw_param, SIGNAL(newFlags(int)), m_screen, SLOT(setDrawFlags(int)));
+    connect(button_draw_param, SIGNAL(newFlags(int)), m_pScreen.get(), SLOT(setDrawFlags(int)));
 
 
     m_engineThread.reset(new QThread(this));
@@ -36,7 +46,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_LCD = new QLCDNumber();
     m_LCD->setFixedHeight(100);
 
-    auto m_imonitor = new QInfoMonitor(this, 180, 180);
     auto button_start = new QPushButton("Start");
     auto button_step = new QPushButton("Step");
     auto button_stop = new QPushButton("Stop");
@@ -47,18 +56,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_stop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(button_reset, SIGNAL(clicked()), this, SLOT(onReset()));
 
-    connect(&m_eng, SIGNAL(newStep(int)), m_LCD, SLOT(display(int)));
-    connect(&m_eng, SIGNAL(newData(Eng::PField)), m_screen, SLOT(draw(Eng::PField)));
-    connect(&m_eng,   SIGNAL(newPerf(Info::Performance)), m_screen, SLOT(getEnginePerformance(Info::Performance)));
-    connect(m_screen, SIGNAL(newPerf(Info::Performance)), m_imonitor, SLOT(newInfoPerformance(Info::Performance)));
-    m_eng.sendData();
-    m_imonitor->update();
+    connect(m_pSimulation.get(), SIGNAL(newStep(int)), m_LCD, SLOT(display(int)));
+    m_pImonitor->update();
     connect(button_stop, SIGNAL(clicked()), m_engineThread.get(), SLOT(quit()));
 
 
     auto layout_buttons = new QVBoxLayout(this);
     layout_buttons->addWidget(m_LCD);
-    layout_buttons->addWidget(m_imonitor);
+    layout_buttons->addWidget(m_pImonitor.get());
     layout_buttons->addWidget(button_start);
     layout_buttons->addWidget(button_step);
     layout_buttons->addWidget(button_stop);
@@ -76,9 +81,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::onStart()
 {
-    disconnect(m_engineThread.get(), SIGNAL(started()), &m_eng, nullptr);
-    m_eng.moveToThread(m_engineThread.get());
-    connect(m_engineThread.get(), SIGNAL(started()), &m_eng, SLOT(loop()));
+    disconnect(m_engineThread.get(), SIGNAL(started()), m_pSimulation.get(), nullptr);
+    m_pSimulation->moveToThread(m_engineThread.get());
+    connect(m_engineThread.get(), SIGNAL(started()), m_pSimulation.get(), SLOT(onStart()));
 
     m_engineThread->start();
 }
@@ -88,24 +93,22 @@ void MainWindow::onStep()
     onStop();
     m_engineThread->quit();
 
-    disconnect(m_engineThread.get(), SIGNAL(started()), &m_eng, nullptr);
-    m_eng.moveToThread(m_engineThread.get());
-    connect(m_engineThread.get(), SIGNAL(started()), &m_eng, SLOT(step()));
-    connect(&m_eng, SIGNAL(newData(Eng::PField)), m_engineThread.get(), SLOT(quit()));
+    disconnect(m_engineThread.get(), SIGNAL(started()), m_pSimulation.get(), nullptr);
+    m_pSimulation->moveToThread(m_engineThread.get());
+    connect(m_engineThread.get(), SIGNAL(started()), m_pSimulation.get(), SLOT(step()));
 
     m_engineThread->start();
 }
 
 void MainWindow::onStop()
 {
-    m_eng.stop();
+    m_pSimulation->stop();
 }
 
 void MainWindow::onReset()
 {
-    m_eng.reset();
+    m_pSimulation->reset();
     m_LCD->display(0);
-    m_eng.sendData();
 }
 
 void MainWindow::setLCD(int num)

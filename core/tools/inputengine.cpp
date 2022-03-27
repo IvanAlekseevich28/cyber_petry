@@ -2,7 +2,7 @@
 
 using namespace Eng;
 
-InputEngine::InputEngine()
+InputEngine::InputEngine(PField pFld) : m_tool(pFld)
 {
     reset();
 }

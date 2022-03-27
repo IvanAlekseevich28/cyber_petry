@@ -3,6 +3,7 @@
 #include <QOpenGLWidget>
 #include <QWidget>
 #include "structs/info.h"
+#include "structs/size.h"
 
 class QInfoMonitor : public QOpenGLWidget
 {
@@ -13,6 +14,7 @@ public:
         M_performance
     };
     QInfoMonitor(QWidget* parent = nullptr, int w = 160, int h = 160);
+    QInfoMonitor(TSize size, QWidget* parent = nullptr);
 
 public slots:
     void nextMod();

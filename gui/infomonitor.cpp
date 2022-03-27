@@ -10,6 +10,12 @@ QInfoMonitor::QInfoMonitor(QWidget* parent, int w, int h) :
     setFixedSize(w,h);
 }
 
+QInfoMonitor::QInfoMonitor(TSize size, QWidget *parent) :
+    QOpenGLWidget(parent)
+{
+    setFixedSize(size.w, size.h);
+}
+
 void QInfoMonitor::nextMod()
 {
 

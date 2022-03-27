@@ -8,7 +8,7 @@
 #include <QThread>
 #include <QLCDNumber>
 #include <memory>
-#include "engine.h"
+#include "simulation.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -34,10 +34,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QLCDNumber *m_LCD;
-    QEngine m_eng;
     std::unique_ptr<QThread> m_engineThread;
-    QGameScreen* m_screen;
-    QInfoMonitor* m_imonitor;
+
+    PSimulation m_pSimulation;
+    PQGameScreen m_pScreen;
+    PQInfoMonitor m_pImonitor;
 
 };
 #endif // MAINWINDOW_H

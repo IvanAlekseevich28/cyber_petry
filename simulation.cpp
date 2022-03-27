@@ -1,11 +1,30 @@
 #include "simulation.h"
 
-Simulation::Simulation(const SimParametrs& settings, PQGameScreen pScreen, PQInfoMonitor pInfoM, QObject *parent) :
-    QObject(parent), m_simPar(settings), m_pScreen(pScreen), m_pInfoMonitor(pInfoM)
-{ 
+Simulation::Simulation(const SimParametrs& settings, QObject *parent) :
+    QObject(parent), m_simPar(settings),
+    m_engSim(Eng::initField(m_simPar.matrixSize)),
+    m_engInput(m_engSim.getState())
+{
     qRegisterMetaType<Info::Performance>();
-    if (m_pInfoMonitor.expired() == false && pInfoM.get() != nullptr)
-        connect(this, &Simulation::newPerf, pInfoM.get(), &QInfoMonitor::newInfoPerformance);
+    reset();
+}
+
+PQGameScreen Simulation::initGameScreen()
+{
+    PQGameScreen screen(new QGameScreen(m_simPar.screenSize, m_simPar.matrixSize), this->parent());
+    m_pScreen = screen;
+    draw();
+
+    return screen;
+}
+
+PQInfoMonitor Simulation::initInfoMonitor(TSize size)
+{
+    PQInfoMonitor monitor(new QInfoMonitor(size, dynamic_cast<QWidget*>(parent())));
+    m_pInfoMonitor = monitor;
+    connect(this, &Simulation::newPerf, monitor.get(), &QInfoMonitor::newInfoPerformance);
+
+    return monitor;
 }
 
 void Simulation::loop()
@@ -53,6 +72,7 @@ void Simulation::step(StepInfo& si)
 void Simulation::stop()
 {
     m_isLoop = false;
+    draw();
 }
 
 void Simulation::reset()
