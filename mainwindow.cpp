@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (spar.countCores < 1)
         spar.countCores = 1;
 
-    m_pSimulation.reset(new Simulation(spar, this));
+    m_pSimulation.reset(new Simulation(spar, nullptr));
     m_pScreen = m_pSimulation->initGameScreen();
     m_pImonitor = m_pSimulation->initInfoMonitor(TSize(180, 360));
 
@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_stop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(button_reset, SIGNAL(clicked()), this, SLOT(onReset()));
 
-    connect(m_pSimulation.get(), SIGNAL(newStep(int)), m_LCD, SLOT(display(int)));
+    connect(m_pSimulation.get(), SIGNAL(iteration(int)), m_LCD, SLOT(display(int)));
     m_pImonitor->update();
     connect(button_stop, SIGNAL(clicked()), m_engineThread.get(), SLOT(quit()));
 
@@ -83,7 +83,7 @@ void MainWindow::onStart()
 {
     disconnect(m_engineThread.get(), SIGNAL(started()), m_pSimulation.get(), nullptr);
     m_pSimulation->moveToThread(m_engineThread.get());
-    connect(m_engineThread.get(), SIGNAL(started()), m_pSimulation.get(), SLOT(onStart()));
+    connect(m_engineThread.get(), SIGNAL(started()), m_pSimulation.get(), SLOT(loop()));
 
     m_engineThread->start();
 }

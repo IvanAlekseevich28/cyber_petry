@@ -11,7 +11,8 @@ Simulation::Simulation(const SimParametrs& settings, QObject *parent) :
 
 PQGameScreen Simulation::initGameScreen()
 {
-    PQGameScreen screen(new QGameScreen(m_simPar.screenSize, m_simPar.matrixSize), this->parent());
+    auto pScreen = new QGameScreen(m_simPar.screenSize, m_simPar.matrixSize, dynamic_cast<QWidget*>(parent()));
+    PQGameScreen screen(pScreen);
     m_pScreen = screen;
     draw();
 
@@ -67,6 +68,12 @@ void Simulation::step(StepInfo& si)
     //  performace
     auto t2 = std::chrono::high_resolution_clock::now();
     si.duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+}
+
+void Simulation::step()
+{
+    StepInfo si;
+    step(si);
 }
 
 void Simulation::stop()

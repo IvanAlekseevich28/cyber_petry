@@ -45,6 +45,7 @@ public:
 public slots:
     void loop();
     void step(StepInfo &si);
+    void step();
     void stop();
     void reset();
 
