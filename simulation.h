@@ -8,6 +8,7 @@
 #include "gamescreen.h"
 #include "structs/info.h"
 #include "structs/size.h"
+#include "gui/infomonitor.h"
 
 struct SimParametrs
 {
@@ -36,7 +37,8 @@ class Simulation : public QObject
 {
     Q_OBJECT
 public:
-    explicit Simulation(const SimParametrs& settings, PQGameScreen pScreen = {}, QObject *parent = nullptr);
+    explicit Simulation(const SimParametrs& settings, PQGameScreen pScreen = {},
+                        PQInfoMonitor pInfoM = {}, QObject *parent = nullptr);
 
 
 public slots:
@@ -58,10 +60,13 @@ signals:
     void iteration(int)const;
 
 private:
+    SimParametrs m_simPar;
+
     Eng::InputEngine m_engInput;
     Eng::MainEngine m_engSim;
+
     PWeakQGameScreen m_pScreen;
-    SimParametrs m_simPar;
+    PWeakQInfoMonitor m_pInfoMonitor;
 
     mutable QElapsedTimer m_FPSTimerLastFrame;
     mutable QElapsedTimer m_secTimer;

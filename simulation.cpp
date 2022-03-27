@@ -1,9 +1,11 @@
 #include "simulation.h"
 
-Simulation::Simulation(const SimParametrs& settings, PQGameScreen pScreen, QObject *parent) :
-    QObject(parent), m_pScreen(pScreen), m_simPar(settings)
+Simulation::Simulation(const SimParametrs& settings, PQGameScreen pScreen, PQInfoMonitor pInfoM, QObject *parent) :
+    QObject(parent), m_simPar(settings), m_pScreen(pScreen), m_pInfoMonitor(pInfoM)
 { 
     qRegisterMetaType<Info::Performance>();
+    if (m_pInfoMonitor.expired() == false && pInfoM.get() != nullptr)
+        connect(this, &Simulation::newPerf, pInfoM.get(), &QInfoMonitor::newInfoPerformance);
 }
 
 void Simulation::loop()
@@ -56,11 +58,19 @@ void Simulation::stop()
 void Simulation::reset()
 {
     m_simDurationTime = 0;
-    m_isLoop = false;
+    if (m_isLoop)
+    {
+        m_isLoop = false;
+        // TODO wait calculations
+    }
     m_engSim.setState(Eng::initField(m_simPar.matrixSize));
 
     m_engInput.reset();
     m_engInput.input(m_engSim.getState());
+    draw();
+
+    if(m_pInfoMonitor.expired() == false)
+        m_pInfoMonitor.lock()->newInfoPerformance(Info::Performance());
 }
 
 void Simulation::askDraw()
@@ -98,7 +108,8 @@ Info::Performance Simulation::calcPerformnce(LoopInfo &li) const
 
 void Simulation::draw() const
 {
-    m_pScreen.lock()->draw(m_engSim.getState(), m_simPar.countCores);
+    if (m_pScreen.expired() == false)
+        m_pScreen.lock()->draw(m_engSim.getState(), m_simPar.countCores);
 
     emit iteration(m_engSim.getState()->index);
     m_FPSTimerLastFrame.restart();

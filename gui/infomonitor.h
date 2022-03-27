@@ -40,3 +40,6 @@ private:
     int m_curx=10;
     int m_cury=20;
 };
+
+typedef std::shared_ptr<QInfoMonitor> PQInfoMonitor;
+typedef std::weak_ptr<QInfoMonitor> PWeakQInfoMonitor;
