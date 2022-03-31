@@ -1,4 +1,5 @@
 #include "simulation.h"
+#include <iostream>
 
 Simulation::Simulation(const SimParametrs& settings, QObject *parent) :
     QObject(parent), m_simPar(settings),
@@ -45,7 +46,7 @@ void Simulation::loop()
         li.msDuration = m_secTimer.elapsed();
         if (li.msDuration >= 1000)
         {
-            m_secTimer.restart();
+            m_secTimer.start();
             emit newPerf(calcPerformnce(li));
             li.reset();
         }
@@ -56,14 +57,19 @@ void Simulation::step(StepInfo& si)
 {
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    m_engInput.input(m_engSim.getState());
-    m_engSim.step(m_simPar.countCores);
+    try {
+        m_engInput.input(m_engSim.getState());
+        m_engSim.step(m_simPar.countCores);
 
-    if (needDraw())
-    {
-        draw();
-        si.wasDraw = true;
+        if (needDraw())
+        {
+            draw();
+            si.wasDraw = true;
+        }
+    }  catch (...) {
+        std::cerr << "Simulation is broken!\n";
     }
+
 
     //  performace
     auto t2 = std::chrono::high_resolution_clock::now();
@@ -135,11 +141,12 @@ Info::Performance Simulation::calcPerformnce(LoopInfo &li) const
 
 void Simulation::draw() const
 {
+    const auto state = m_engSim.getState();
     if (m_pScreen.expired() == false)
-        m_pScreen.lock()->draw(m_engSim.getState(), m_simPar.countCores);
+        m_pScreen.lock()->draw(state, m_simPar.countCores);
 
-    emit iteration(m_engSim.getState()->index);
-    m_FPSTimerLastFrame.restart();
+    emit iteration(state->index);
+    m_FPSTimerLastFrame.start();
 }
 
 void LoopInfo::reset()

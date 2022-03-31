@@ -24,7 +24,6 @@ SOURCES += \
     draw/colormixer.cpp \
     draw/fieldcolor.cpp \
     draw/gradientengine.cpp \
-    engine.cpp \
     gamescreen.cpp \
     gui/drawsettings.cpp \
     gui/infomonitor.cpp \
@@ -56,7 +55,6 @@ HEADERS += \
     draw/minmax.h \
     draw/paintflags.h \
     draw/types.h \
-    engine.h \
     gamescreen.h \
     gui/drawsettings.h \
     gui/infomonitor.h \

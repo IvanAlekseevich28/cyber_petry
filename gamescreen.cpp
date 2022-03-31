@@ -1,4 +1,5 @@
 #include "gamescreen.h"
+#include <iostream>
 
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
@@ -50,10 +51,16 @@ void QGameScreen::resizeGL(int nWidth, int nHeight)
 
 void QGameScreen::paintGL()
 {
-    if (m_pField.get())
-        drawMatrix();
+    try
+    {
+        if (m_pField.get())
+            drawMatrix();
 
-    emit ready();
+        emit ready();
+    }  catch (...) {
+        std::cerr << "Terrible mistake!\n";
+    }
+
 }
 
 

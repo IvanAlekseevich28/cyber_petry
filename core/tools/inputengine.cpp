@@ -28,6 +28,22 @@ bool Eng::InputEngine::input(PField pFld)
         {
             m_tool.addLiquid(ip, LT_water, 0x10000);
         }
+
+        Point ip2(matW - index*8, matH - index*2);
+        if(pFld->inField(ip))
+        {
+            m_tool.addLiquid(ip2, LT_acid, 0x10000);
+        }
+
+
+        Point ip3(matW/2, matH/2);
+        if(pFld->inField(ip))
+        {
+            if (index % 6 == 0)
+                m_tool.addWaveHeight(ip3, 0x400);
+            else if (index % 6 == 2)
+                m_tool.addWaveHeight(ip3, -0x400);
+        }
     }
 
     m_processedIndex = index;
