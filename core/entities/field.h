@@ -34,6 +34,7 @@ struct Field
         {return m.size() * getH();}
 };
 typedef std::shared_ptr<Field> PField;
+typedef std::shared_ptr<const Field> PCField;
 typedef const Field& CField;
 
 PField initField(const TCoord w, const TCoord h);

@@ -16,7 +16,7 @@ QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *pa
 //    m_pLastClrField = Draw::initClrField(w,h);
 }
 
-void QGameScreen::draw(Eng::PField pField, unsigned countCores)
+void QGameScreen::draw(const Eng::PCField& pField, unsigned countCores)
 {
     m_countCores = countCores;
     m_pField = pField;

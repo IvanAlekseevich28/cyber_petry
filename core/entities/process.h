@@ -6,16 +6,16 @@ namespace Eng
 {
 struct Process
 {
-    const PField last;
+    const PCField last;
     PField curr;
 
-    Process(const PField state) : last(state)
+    Process(const PCField state) : last(state)
     {
         curr.reset(new Field(*(last)));
     }
 };
 typedef std::unique_ptr<Process> PProcess;
 
-PProcess startProc(PField pField);
+PProcess startProc(PCField pField);
 PField endProc(PProcess fp);
 }

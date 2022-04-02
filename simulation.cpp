@@ -134,14 +134,14 @@ Info::Performance Simulation::calcPerformnce(LoopInfo &li) const
     perf.ups = static_cast<double>(li.stepsPerSecond) / li.msDuration * 1000;
     perf.ctis = m_simDurationTime / 1000000;
     perf.coac = m_simPar.countCores;
-    perf.cups = perf.ups * m_engSim.getState()->getResolution();
+    perf.cups = perf.ups * m_engSim.getConstState()->getResolution();
 
     return perf;
 }
 
 void Simulation::draw() const
 {
-    const auto state = m_engSim.getState();
+    const auto state = m_engSim.getConstState();
     if (m_pScreen.expired() == false)
         m_pScreen.lock()->draw(state, m_simPar.countCores);
 

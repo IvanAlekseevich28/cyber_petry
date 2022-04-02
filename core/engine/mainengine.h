@@ -10,7 +10,8 @@ class MainEngine
 public:
     MainEngine(PField state);
     const PField step(const TCount countThreads=1);
-    PField getState()const;
+    PField getState();
+    PCField getConstState()const;
 
     void setState(const PField &newPState);
 

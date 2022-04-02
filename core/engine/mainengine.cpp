@@ -22,7 +22,12 @@ const PField Eng::MainEngine::step(const TCount countThreads)
     return m_pState;
 }
 
-PField MainEngine::getState() const
+PField MainEngine::getState()
+{
+    return m_pState;
+}
+
+PCField MainEngine::getConstState()const
 {
     return m_pState;
 }

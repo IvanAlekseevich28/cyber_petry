@@ -31,7 +31,7 @@ static void Field2ClrThread(const Eng::Field& in, ClrField& out, const CellColor
     }
 }
 
-PClrField convertField2Clr(const Eng::PField in, const CellColor& cc, const Eng::TCount countThreads)
+PClrField convertField2Clr(const Eng::PCField in, const CellColor& cc, const Eng::TCount countThreads)
 {
     std::list<std::thread> threads;
     Eng::ThreadInfo ti(0, countThreads);

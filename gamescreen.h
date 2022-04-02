@@ -14,7 +14,7 @@ public:
     QGameScreen(const TSize& scrSize, const TSize& matSize, QWidget *parent = nullptr);
 
 public slots:
-    void draw(Eng::PField pField, unsigned countCores = 1);
+    void draw(const Eng::PCField &pField, unsigned countCores = 1);
     void setDrawFlags(int flags = Draw::DO__All);
     void getEnginePerformance(Info::Performance perf);
 
@@ -33,7 +33,7 @@ protected:
 
 private:
     TSize m_matSize;
-    Eng::PField m_pField;
+    Eng::PCField m_pField;
     Draw::CellColor m_CellClr;
     Draw::PClrField m_pLastClrField;
     int m_drawFlags;
