@@ -10,6 +10,7 @@
 #include "structs/size.h"
 #include "gui/infomonitor.h"
 
+
 struct SimParametrs
 {
     unsigned FPSLimit=30;
@@ -70,8 +71,6 @@ private:
     PWeakQGameScreen m_pScreen;
     PWeakQInfoMonitor m_pInfoMonitor;
 
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_nextFrameWillbe;
-    mutable QElapsedTimer m_FPSTimerLastFrame;
     mutable QElapsedTimer m_secTimer;
     long long m_simDurationTime=0;
 

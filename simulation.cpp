@@ -57,17 +57,13 @@ void Simulation::step(StepInfo& si)
 {
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    try {
-        m_engInput.input(m_engSim.getState());
-        m_engSim.step(m_simPar.countCores);
+    m_engInput.input(m_engSim.getState());
+    m_engSim.step(m_simPar.countCores);
 
-//        if (needDraw())
-        {
-            draw();
-            si.wasDraw = true;
-        }
-    }  catch (...) {
-        std::cerr << "Simulation is broken!\n";
+    //        if (needDraw())
+    {
+        draw();
+        si.wasDraw = true;
     }
 
 
@@ -117,16 +113,12 @@ bool Simulation::needDraw() const
     if (m_pScreen.expired())
         return false;
 
-    if (m_FPSTimerLastFrame.isValid() == false)
-        return true;
+    return true;
 
-    const qint64 timeForNextFrame = 1000 / m_simPar.FPSLimit;
-    const auto lastFrameWas = m_FPSTimerLastFrame.elapsed();
-    std::cout << lastFrameWas << "\n";
-    if (lastFrameWas >= timeForNextFrame || m_isLoop == false)
-        return true;
+    //    if (*m_pNextFrameWillbe <= Clock::now() || m_isLoop == false)
+    //        return true;
 
-    return false;
+    //    return false;
 }
 
 Info::Performance Simulation::calcPerformnce(LoopInfo &li) const
@@ -148,7 +140,6 @@ void Simulation::draw() const
         m_pScreen.lock()->draw(state, m_simPar.countCores);
 
     emit iteration(state->index);
-    m_FPSTimerLastFrame.start();
 }
 
 void LoopInfo::reset()
