@@ -13,7 +13,8 @@ QGameScreen::QGameScreen(const TSize &scrSize, const TSize &matSize, QWidget *pa
     m_drawFlags(Draw::DO__All)
 {
     setFixedSize(scrSize.w,scrSize.h);
-//    m_pLastClrField = Draw::initClrField(w,h);
+    update();
+    //    m_pLastClrField = Draw::initClrField(w,h);
 }
 
 void QGameScreen::draw(const Eng::PCField& pField, unsigned countCores)
@@ -51,53 +52,59 @@ void QGameScreen::resizeGL(int nWidth, int nHeight)
 
 void QGameScreen::paintGL()
 {
-    try
-    {
-        if (m_pField.get())
-            drawMatrix();
+    if (m_pField.get())
+        drawMatrix();
 
-        emit ready();
-    }  catch (...) {
-        std::cerr << "Terrible mistake!\n";
-    }
+    emit ready();
 
 }
 
-
 void QGameScreen::drawSquare(const QColor& clr, double x1, double y1, double sidelength)
 {
-        glColor3d(clr.redF(),clr.greenF(),clr.blueF());
+    glColor3d(clr.redF(),clr.greenF(),clr.blueF());
 
-        glVertex2d(x1, y1);
-        glVertex2d(x1 + sidelength, y1);
-        glVertex2d(x1 + sidelength, y1 + sidelength);
-        glVertex2d(x1, y1 + sidelength);
+    glVertex2d(x1, y1);
+    glVertex2d(x1 + sidelength, y1);
+    glVertex2d(x1 + sidelength, y1 + sidelength);
+    glVertex2d(x1, y1 + sidelength);
 
 }
 
 void QGameScreen::drawMatrix()
 {
+    if (m_pField.get() == nullptr)
+    {
+       std::cerr << "Terrible nullptr!\n";
+       return;
+    }
     const auto vCellsCount = m_pField->m.size();
     const auto hCellsCount = vCellsCount ? m_pField->getH() : 1;
 
     m_CellClr.setFDraw(m_drawFlags);
-    auto matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, m_countCores);
+    Draw::PClrField matrixClr;
+    try
+    {
+         matrixClr = Draw::convertField2Clr(m_pField, m_CellClr, m_countCores);
+    }  catch (...) {
+        std::cerr << "Terrible mistake!\n";
+        matrixClr = Draw::initClrField(vCellsCount, hCellsCount);
+    }
 
     if (m_pLastClrField.get() == nullptr)
         m_pLastClrField = Draw::initClrField(vCellsCount, hCellsCount);
 
-//    glPushMatrix();
+    //    glPushMatrix();
     glBegin(GL_QUADS);
     for (unsigned x = 0; x < vCellsCount; x++) {
         for (unsigned y = 0; y < hCellsCount; y++)
         {
             const auto& curPixel = (*matrixClr)[x][y];
-//            if (curPixel != (*m_pLastClrField)[x][y])
-                drawSquare(curPixel,x,y, 1);
+            //            if (curPixel != (*m_pLastClrField)[x][y])
+            drawSquare(curPixel,x,y, 1);
         }
     }
     glEnd();
-//    glPopMatrix();
+    //    glPopMatrix();
 
     m_pLastClrField = std::move(matrixClr);
 }

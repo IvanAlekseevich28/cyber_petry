@@ -61,7 +61,7 @@ void Simulation::step(StepInfo& si)
         m_engInput.input(m_engSim.getState());
         m_engSim.step(m_simPar.countCores);
 
-        if (needDraw())
+//        if (needDraw())
         {
             draw();
             si.wasDraw = true;
@@ -121,7 +121,9 @@ bool Simulation::needDraw() const
         return true;
 
     const qint64 timeForNextFrame = 1000 / m_simPar.FPSLimit;
-    if (m_FPSTimerLastFrame.elapsed() >= timeForNextFrame || m_isLoop == false)
+    const auto lastFrameWas = m_FPSTimerLastFrame.elapsed();
+    std::cout << lastFrameWas << "\n";
+    if (lastFrameWas >= timeForNextFrame || m_isLoop == false)
         return true;
 
     return false;

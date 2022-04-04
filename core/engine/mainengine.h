@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <mutex>
 #include "IEngine.h"
 
 namespace Eng
@@ -18,5 +19,6 @@ public:
 private:
     PField m_pState;
     std::list<PIEngine> m_engines;
+    mutable std::mutex m_MCalulating;
 };
 }
