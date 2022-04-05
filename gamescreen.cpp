@@ -3,6 +3,7 @@
 
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QMouseEvent>
 #include <QPainter>
 
 #include <chrono>
@@ -33,6 +34,12 @@ void QGameScreen::setDrawFlags(int flags)
 void QGameScreen::getEnginePerformance(Info::Performance perf)
 {
     m_perf = perf;
+}
+
+void QGameScreen::newMousePos(QMouseEvent *event) const
+{
+    ;
+    std::cout << event->pos().rx() << " " << event->pos().ry() << "\n";
 }
 
 void QGameScreen::initializeGL()
