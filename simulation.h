@@ -61,6 +61,7 @@ private:
 signals:
     void newPerf(Info::Performance perf)const;
     void iteration(int)const;
+    void cellInfo(const Eng::PosCell)const;
 
 private:
     SimParametrs m_simPar;
@@ -75,6 +76,7 @@ private:
     long long m_simDurationTime=0;
 
     bool m_isLoop;
+    Eng::Point m_cellInfoPoint;
 };
 
 typedef std::unique_ptr<Simulation> PSimulation;

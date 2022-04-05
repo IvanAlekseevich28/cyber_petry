@@ -29,10 +29,10 @@ bool Eng::InputEngine::input(PField pFld)
             m_tool.addLiquid(ip, LT_water, 0x10000);
         }
 
-        Point ip2(matW - index*8, matH - index*2);
-        if(pFld->inField(ip))
+        for (int i = 0; i < 80; i++)
         {
-            m_tool.addLiquid(ip2, LT_acid, 0x10000);
+            m_tool.addRandomLiquid(0x1000000, LT_water);
+            m_tool.addRandomLiquid(0x1000);
         }
 
 

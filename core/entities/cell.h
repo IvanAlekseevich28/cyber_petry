@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <QMetaType>
 
 namespace Eng
 {
@@ -34,7 +35,10 @@ struct Cell
     Cell operator+(const Cell& oth)const;
     Cell& operator+=(const Cell& oth);
     void clear();
+    TLiquid countLiquids()const;
 
 };
 typedef const Cell& CCell;
 }
+
+Q_DECLARE_METATYPE(Eng::Cell);

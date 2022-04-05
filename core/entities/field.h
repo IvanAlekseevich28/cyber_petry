@@ -6,8 +6,6 @@
 #include <vector>
 #include <memory>
 
-#include <QMetaType>
-
 namespace Eng
 {
 typedef std::vector<std::vector<Cell> > CellMatrix;

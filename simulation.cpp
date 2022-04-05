@@ -6,6 +6,7 @@ Simulation::Simulation(const SimParametrs& settings, QObject *parent) :
     m_engSim(Eng::initField(m_simPar.matrixSize)),
     m_engInput(m_engSim.getState())
 {
+    m_cellInfoPoint = Eng::Point(5,5);
     qRegisterMetaType<Info::Performance>();
     reset();
 }
@@ -25,6 +26,7 @@ PQInfoMonitor Simulation::initInfoMonitor(TSize size)
     PQInfoMonitor monitor(new QInfoMonitor(size, dynamic_cast<QWidget*>(parent())));
     m_pInfoMonitor = monitor;
     connect(this, &Simulation::newPerf, monitor.get(), &QInfoMonitor::newInfoPerformance);
+    connect(this, &Simulation::cellInfo, monitor.get(), &QInfoMonitor::newCell);
 
     return monitor;
 }
@@ -60,12 +62,11 @@ void Simulation::step(StepInfo& si)
     m_engInput.input(m_engSim.getState());
     m_engSim.step(m_simPar.countCores);
 
-    //        if (needDraw())
+//            if (needDraw())
     {
         draw();
         si.wasDraw = true;
     }
-
 
     //  performace
     auto t2 = std::chrono::high_resolution_clock::now();
@@ -140,6 +141,9 @@ void Simulation::draw() const
         m_pScreen.lock()->draw(state, m_simPar.countCores);
 
     emit iteration(state->index);
+    Eng::PosCell pc(m_cellInfoPoint, state->m[m_cellInfoPoint.x][m_cellInfoPoint.y]);
+    if (m_pInfoMonitor.expired() == false)
+        m_pInfoMonitor.lock()->newCell(pc);
 }
 
 void LoopInfo::reset()

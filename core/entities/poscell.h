@@ -7,6 +7,10 @@ namespace Eng
 {
 struct PosCell : public Point, public Cell
 {
+
+    PosCell() :
+        Point(0,0) {}
+
     PosCell(CPoint p, CCell c) :
         Point(p), Cell(c) {}
 
@@ -29,4 +33,8 @@ struct PosCell : public Point, public Cell
         Cell::wave2 = wave2;
     }
 };
+
+typedef const PosCell& CPosCell;
 }
+
+Q_DECLARE_METATYPE(Eng::PosCell);

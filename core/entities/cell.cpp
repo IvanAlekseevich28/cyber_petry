@@ -46,3 +46,8 @@ void Cell::clear()
     wave1 = 0;
     wave2 = 0;
 }
+
+TLiquid Cell::countLiquids() const
+{
+    return std::accumulate(arrLiquids.begin(), arrLiquids.end(), 0);
+}
