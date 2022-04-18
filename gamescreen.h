@@ -17,7 +17,7 @@ public slots:
     void draw(const Eng::PCField &pField, unsigned countCores = 1);
     void setDrawFlags(int flags = Draw::DO__All);
     void getEnginePerformance(Info::Performance perf);
-    void newMousePos(QMouseEvent *event)const;
+    void mouseDoubleClickEvent(QMouseEvent *event)override;
 
 signals:
     void ready();

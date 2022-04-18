@@ -43,12 +43,15 @@ public:
     PQGameScreen initGameScreen();
     PQInfoMonitor initInfoMonitor(TSize size);
 
+
 public slots:
     void loop();
     void step(StepInfo &si);
     void step();
     void stop();
     void reset();
+
+    void setCellInfoPoint(QPoint p);
 
     void askDraw();
 

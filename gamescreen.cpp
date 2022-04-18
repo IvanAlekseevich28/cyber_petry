@@ -36,10 +36,10 @@ void QGameScreen::getEnginePerformance(Info::Performance perf)
     m_perf = perf;
 }
 
-void QGameScreen::newMousePos(QMouseEvent *event) const
+void QGameScreen::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    ;
-    std::cout << event->pos().rx() << " " << event->pos().ry() << "\n";
+    emit newCoordCell(event->pos());
+//    std::cout << event->pos().rx() << " " << event->pos().ry() << "\n";
 }
 
 void QGameScreen::initializeGL()

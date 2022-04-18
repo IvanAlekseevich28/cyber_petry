@@ -6,7 +6,7 @@ Simulation::Simulation(const SimParametrs& settings, QObject *parent) :
     m_engSim(Eng::initField(m_simPar.matrixSize)),
     m_engInput(m_engSim.getState())
 {
-    m_cellInfoPoint = Eng::Point(5,5);
+    m_cellInfoPoint = Eng::Point(0,0);
     qRegisterMetaType<Info::Performance>();
     reset();
 }
@@ -15,6 +15,8 @@ PQGameScreen Simulation::initGameScreen()
 {
     auto pScreen = new QGameScreen(m_simPar.screenSize, m_simPar.matrixSize, dynamic_cast<QWidget*>(parent()));
     PQGameScreen screen(pScreen);
+    connect(screen.get(), &QGameScreen::newCoordCell, this, &Simulation::setCellInfoPoint);
+
     m_pScreen = screen;
     draw();
 
@@ -27,6 +29,7 @@ PQInfoMonitor Simulation::initInfoMonitor(TSize size)
     m_pInfoMonitor = monitor;
     connect(this, &Simulation::newPerf, monitor.get(), &QInfoMonitor::newInfoPerformance);
     connect(this, &Simulation::cellInfo, monitor.get(), &QInfoMonitor::newCell);
+
 
     return monitor;
 }
@@ -144,6 +147,18 @@ void Simulation::draw() const
     Eng::PosCell pc(m_cellInfoPoint, state->m[m_cellInfoPoint.x][m_cellInfoPoint.y]);
     if (m_pInfoMonitor.expired() == false)
         m_pInfoMonitor.lock()->newCell(pc);
+}
+
+void Simulation::setCellInfoPoint(QPoint p)
+{
+    m_cellInfoPoint = Eng::Point(p.x(), p.y());
+    Eng::PosCell pc(m_cellInfoPoint, m_engSim.getConstState()->m[m_cellInfoPoint.x][m_cellInfoPoint.y]);
+    if (m_pInfoMonitor.expired() == false)
+    {
+        auto pIM = m_pInfoMonitor.lock();
+        pIM->newCell(pc);
+        pIM->update();
+    }
 }
 
 void LoopInfo::reset()
