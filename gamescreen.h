@@ -33,6 +33,8 @@ protected:
 
     void calcPerformance(long duration);
 
+    QPoint scaleClick(const QPoint& coord)const;
+
 private:
     TSize m_matSize;
     Eng::PCField m_pField;

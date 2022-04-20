@@ -38,7 +38,7 @@ void QGameScreen::getEnginePerformance(Info::Performance perf)
 
 void QGameScreen::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    emit newCoordCell(event->pos());
+    emit newCoordCell(scaleClick(event->pos()));
 //    std::cout << event->pos().rx() << " " << event->pos().ry() << "\n";
 }
 
@@ -120,4 +120,13 @@ void QGameScreen::calcPerformance(long duration)
 {
     m_perf.fps = 1000000.0 / duration;
     emit newPerf(m_perf);
+}
+
+QPoint QGameScreen::scaleClick(const QPoint &coord) const
+{
+    double multX = static_cast<double>(m_matSize.w) / width();
+    double multY = static_cast<double>(m_matSize.h) / height();
+    QPoint scoord(static_cast<int>(multX * coord.x()),
+                  static_cast<int>(multY * coord.y()));
+    return scoord;
 }
