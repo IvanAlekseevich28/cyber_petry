@@ -3,6 +3,7 @@
 #include <QOpenGLContext>
 #include <QPainter>
 #include "../utils/strnum.h"
+#include <iostream>
 
 QInfoMonitor::QInfoMonitor(QWidget* parent, int w, int h) :
     QOpenGLWidget(parent)
@@ -80,7 +81,7 @@ void QInfoMonitor::paintGL()
         break;
     case M_performance:
     default:
-        drawCellInfo();
+        drawPerformance(m_perfomance);
     }
 }
 

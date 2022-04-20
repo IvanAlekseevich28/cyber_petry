@@ -46,12 +46,14 @@ MainWindow::MainWindow(QWidget *parent)
     m_LCD = new QLCDNumber();
     m_LCD->setFixedHeight(100);
 
+    auto button_next = new QPushButton("Next");
     auto button_start = new QPushButton("Start");
     auto button_step = new QPushButton("Step");
     auto button_stop = new QPushButton("Stop");
     auto button_reset = new QPushButton("Reset");
     //     connect(button, SIGNAL(clicked()), this, SLOT(slotGetNumber()));
     connect(button_start, SIGNAL(clicked()), this, SLOT(onStart()));
+    connect(button_next, SIGNAL(clicked()), m_pImonitor.get(), SLOT(nextMod()));
     connect(button_step, SIGNAL(clicked()), this, SLOT(onStep()));
     connect(button_stop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(button_reset, SIGNAL(clicked()), this, SLOT(onReset()));
@@ -64,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     auto layout_buttons = new QVBoxLayout(this);
     layout_buttons->addWidget(m_LCD);
     layout_buttons->addWidget(m_pImonitor.get());
+    layout_buttons->addWidget(button_next);
     layout_buttons->addWidget(button_start);
     layout_buttons->addWidget(button_step);
     layout_buttons->addWidget(button_stop);
