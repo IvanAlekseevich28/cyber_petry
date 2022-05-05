@@ -13,6 +13,7 @@ typedef std::vector<std::vector<Cell> > CellMatrix;
 struct Field
 {
     CellMatrix m;
+
     TLiquids flowsRate;
     TCount wavePowerLosingPow2;
 
