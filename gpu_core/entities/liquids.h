@@ -1,14 +1,28 @@
-#ifndef LIQUIDS_H
-#define LIQUIDS_H
+#pragma once
+#include <array>
+#include <vector>
 
-typedef struct // Liquids
+namespace GEng
 {
-    int water;
-    int oxygen;
-    int carbon;
-    int nitrogen;
-    int acid;
-    int organic;
-} Liquids;
+enum eLiquidType
+{
+    LT_water,
+    LT_oxygen,
+    LT_carbon,
+    LT_nitrogen,
+    LT_acid,
+    LT_organic,
 
-#endif // LIQUIDS_H
+    LT__END
+};
+
+struct Liquids
+{
+    std::array<std::vector<int>, LT__END> m;
+    std::array<int, LT__END> flowRate;
+
+    inline int size()const {return m[0].size();}
+    inline std::vector<int>& operator[] (const size_t i) {return m[i];}
+
+};
+}
