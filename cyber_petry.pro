@@ -25,9 +25,9 @@ SOURCES += \
     draw/fieldcolor.cpp \
     draw/gradientengine.cpp \
     gamescreen.cpp \
+    gpu_core/engine/mainengine.cpp \
     gpu_core/entities/field.cpp \
     gpu_core/tools/field.cpp \
-    gpu_core/tools/liquids.cpp \
     gui/drawsettings.cpp \
     gui/infomonitor.cpp \
     gui/screencontroller.cpp \
@@ -59,17 +59,18 @@ HEADERS += \
     draw/paintflags.h \
     draw/types.h \
     gamescreen.h \
+    gpu_core/engine/mainengine.h \
     gpu_core/entities/field.h \
     gpu_core/entities/liquids.h \
     gpu_core/tools/curves/long_z.h \
     gpu_core/tools/field.h \
-    gpu_core/tools/liquids.h \
     gui/drawsettings.h \
     gui/infomonitor.h \
     gui/screencontroller.h \
     mainwindow.h \
     simulation.h \
     structs/info.h \
+    common/opencl.h \
     structs/size.h
 
 

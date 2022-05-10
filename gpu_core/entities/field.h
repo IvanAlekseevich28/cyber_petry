@@ -1,14 +1,20 @@
-#ifndef FIELD_H
-#define FIELD_H
+#pragma once
 
 #include "liquids.h"
+#include "../../structs/size.h"
+#include <memory>
 
-typedef struct // Field
+namespace GEng
 {
-    Liquids* arrLiquids;
-    Liquids  flowRate;
-    int width;
-    int height;
-} Field;
+struct Field
+{
+    const int index;
+    TSize size;
+    Liquids arrLiquids;
 
-#endif // FIELD_H
+    Field(TSize s, int index);
+};
+
+using PField = std::shared_ptr<Field>;
+using PCField = std::shared_ptr<const Field>;
+}

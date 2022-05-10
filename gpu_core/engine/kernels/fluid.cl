@@ -1,12 +1,5 @@
 #define VALUES_PER_WORK_ITEM 64
 
-// CPU check
-#if __cplusplus
-    #define kernel '\ '
-    #define global '\ '
-#elif
-
-#endif
 inline int getCountNeighbours(const int x, const int y, const int matW, const int matH)
 {
     if (x > 0 && y > 0 && x < matW-1 && y < matH-1) return 4;
@@ -30,7 +23,7 @@ void kernel calcFluids(global const int* arrIn, global int* arrOut, global const
 {
     const int localId = get_local_id(0);
     const int groupId = get_group_id(0);
-    const int groupSize = pLen[0]/VALUES_PER_WORK_ITEM;
+    const int groupSize = *pLen/VALUES_PER_WORK_ITEM;
 
     const TCoord maskX[] = {-1, 1, 0, 0};
     const TCoord maskY[] = { 0, 0,-1, 1};

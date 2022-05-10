@@ -9,4 +9,6 @@ struct TSize
         w(w), h(h) {}
     explicit TSize(unsigned s) :
         w(s), h(s) {}
+
+    inline int length()const {return  w*h;}
 };

@@ -24,5 +24,11 @@ struct Liquids
     inline int size()const {return m[0].size();}
     inline std::vector<int>& operator[] (const size_t i) {return m[i];}
 
+    Liquids(const int lenght)
+    {
+        for (int i = 0; i < LT__END; i++)
+            m[i] = std::vector<int>(lenght,0);
+        flowRate.fill(5);
+    }
 };
 }
