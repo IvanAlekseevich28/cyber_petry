@@ -2,7 +2,6 @@
 #include "../engine/mainengine.h"
 #include <chrono>
 
-
 cl::Device getDevice()
 {
     cl_int error = 0;
@@ -41,6 +40,7 @@ cl::Device getDevice()
 
     return std::move(all_devices.back());
 }
+
 
 int main()
 {

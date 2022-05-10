@@ -5,7 +5,7 @@
 using namespace GEng;
 
 MainEngine::MainEngine(PField state, const cl::Device &device) :
-    m_pState(state), m_device(device) {}
+    m_pState(state), m_device(device), m_context(device) {}
 
 const PField MainEngine::step(const int countSteps)
 {
@@ -20,9 +20,12 @@ const PField MainEngine::step(const int countSteps)
     if (m_mapBuffers.size() < B__End)
     {
         m_mapBuffers.clear();
+        int errBuffer;
         for (int i = 0; i < LT__END; i++)
         {
-            cl::Buffer buffer(m_context, CL_MEM_READ_WRITE, sizeof(int) * bufLen);
+            cl::Buffer buffer(m_context, CL_MEM_READ_WRITE, sizeof(int) * bufLen, NULL, &errBuffer);
+            if (errBuffer != CL_SUCCESS)
+                throw ;
             m_mapBuffers.insert(std::make_pair(i, std::move(buffer)));
         }
         // buffer for swap
@@ -46,9 +49,13 @@ const PField MainEngine::step(const int countSteps)
 
 
         m_optQueue = cl::CommandQueue(m_context, m_device);
-        for (int i = 0; i <= LT__END; i++)
-            m_optQueue->enqueueWriteBuffer(
+        for (int i = 0; i < LT__END; i++)
+        {
+            cl_int errQueue = m_optQueue->enqueueWriteBuffer(
                         m_mapBuffers[i], CL_TRUE, 0, sizeof(int) * bufLen, &m_pState->arrLiquids[i]);
+            if (errQueue != CL_SUCCESS)
+                throw ;
+        }
 
         m_optQueue->enqueueWriteBuffer(
                     m_mapBuffers[B_width], CL_TRUE, 0, sizeof(int), &width);
@@ -72,14 +79,18 @@ const PField MainEngine::step(const int countSteps)
             calcFluids.setArg(4, m_mapBuffers[B_height]);
             calcFluids.setArg(5, m_mapBuffers[B_lenght]);
 
-            m_optQueue->enqueueNDRangeKernel(calcFluids,cl::NullRange,cl::NDRange(bufLen/64)); // ceil n/64
+            cl_int errQ = m_optQueue->enqueueNDRangeKernel(calcFluids,cl::NullRange,cl::NDRange(bufLen/64)); // ceil n/64
 
+            if (errQ != CL_SUCCESS)
+                throw ;
             std::swap(m_mapBuffers[B_buffer], m_mapBuffers[i]);
         }
     PField pField(new Field(m_pState->size, m_pState->index + countSteps));
     for (int i = 0; i < LT__END; i++)
     {
-        m_optQueue->enqueueReadBuffer(m_mapBuffers[i], CL_TRUE, 0, sizeof (int) * bufLen, &pField->arrLiquids[i]);
+        cl_int errEnQ = m_optQueue->enqueueReadBuffer(m_mapBuffers[i], CL_TRUE, 0, sizeof (int) * bufLen, &(pField->arrLiquids[i]));
+        if (errEnQ != CL_SUCCESS)
+            throw;
     }
     m_pState = pField;
     return pField;
@@ -102,7 +113,8 @@ bool MainEngine::buildProgram()
     auto status = program.build({m_device}) ;
     if (status != CL_SUCCESS)
     {
-        auto strError = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_device);
+        cl_int err;
+        auto strError = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(m_device, &err);
         std::cerr << "Error building: " << strError << "\n";
         return false;
     }

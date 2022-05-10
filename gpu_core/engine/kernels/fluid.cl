@@ -25,8 +25,8 @@ void kernel calcFluids(global const int* arrIn, global int* arrOut, global const
     const int groupId = get_group_id(0);
     const int groupSize = *pLen/VALUES_PER_WORK_ITEM;
 
-    const TCoord maskX[] = {-1, 1, 0, 0};
-    const TCoord maskY[] = { 0, 0,-1, 1};
+    const int maskX[] = {-1, 1, 0, 0};
+    const int maskY[] = { 0, 0,-1, 1};
     const int maskLen = sizeof (maskX) / sizeof (int);
 
 
